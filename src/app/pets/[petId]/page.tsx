@@ -3,10 +3,10 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import type { ReactNode } from 'react'
 import AppShell from '@/components/AppShell'
+import { formatDate } from '@/components/AppointmentCard'
 import { backLink, card, eyebrow } from '@/components/ui'
-import { getPet } from '@/database/pets/get-pet'
-import { currentUser } from '@/lib/session'
-import { isUuid } from '@/lib/uuid'
+import { currentUser } from '@/main/current-user'
+import { makeGetPet } from '@/main/factories/pets'
 
 function Detail({ icon, label, value }: { icon: ReactNode, label: string, value: string }) {
   return (
@@ -25,7 +25,7 @@ export default async function PetProfile({ params }: PageProps<'/pets/[petId]'>)
   if (!user) redirect('/login')
 
   const { petId } = await params
-  const pet = isUuid(petId) ? await getPet(petId, user.id) : null
+  const pet = await makeGetPet().execute({ userId: user.id, id: petId })
 
   if (!pet) {
     return (
@@ -54,7 +54,7 @@ export default async function PetProfile({ params }: PageProps<'/pets/[petId]'>)
         <div className="grid grid-cols-1 gap-3 py-7 md:grid-cols-3">
           <Detail icon={<PawPrint size={20} />} label="Idade" value={pet.age} />
           <Detail icon={<Weight size={20} />} label="Peso" value={pet.weight} />
-          <Detail icon={<CalendarDays size={20} />} label="Próxima vacina" value={pet.vaccine} />
+          <Detail icon={<CalendarDays size={20} />} label="Próxima vacina" value={formatDate(pet.vaccine)} />
         </div>
 
         <div className="border-t border-line pt-[25px]">

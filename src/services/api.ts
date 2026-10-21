@@ -4,6 +4,7 @@ import type {
   Pet,
   User,
 } from "@/types";
+import { translate } from "./translate";
 
 const DEFAULT_ERROR = "Não foi possível concluir a operação.";
 
@@ -38,7 +39,7 @@ async function request<T>(
 
     try {
       const data = await response.json();
-      message = data.message || message;
+      message = data.message ? translate(data.message) : message;
     } catch {
       // Resposta sem JSON.
     }
@@ -56,11 +57,13 @@ export type PetInput = Omit<Pet, "id" | "vaccine"> & {
 };
 
 export const api = {
-  register: (name: string, email: string, password: string) =>
-    request<{ message: string; user: User }>("/api/auth/register", {
+  register: async (name: string, email: string, password: string) => {
+    const result = await request<{ message: string; user: User }>("/api/auth/register", {
       method: "POST",
       body: JSON.stringify({ name, email, password }),
-    }),
+    });
+    return { ...result, message: translate(result.message) };
+  },
 
   login: (email: string, password: string) =>
     request<User>("/api/auth/login", {

@@ -10,6 +10,11 @@
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest",
+    "test:unit": "vitest run --project unit --project components",
+    "test:integration": "vitest run --project integration",
+    "test:e2e": "next build && playwright test",
+    "test:performance": "next build && node scripts/performance.mjs",
+    "test:all": "vitest run && next build && playwright test && node scripts/performance.mjs",
     "db:setup": "node --env-file-if-exists=.env scripts/db-setup.mjs"
   },
   "dependencies": {
@@ -18,9 +23,13 @@
     "next": "^16.4.0",
     "pg": "^8.23.1",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@electric-sql/pglite-socket": "^0.2.13",
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^24.19.1",
     "@types/pg": "^8.23.1",

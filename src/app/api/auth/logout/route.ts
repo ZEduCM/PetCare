@@ -1,6 +1,4 @@
-import { endSession } from "@/lib/session";
+import { adaptRoute } from "@/main/adapters/next-route-adapter";
+import { makeLogoutController } from "@/main/factories/auth";
 
-export async function POST() {
-  await endSession();
-  return new Response(null, { status: 204 });
-}
+export const POST = adaptRoute(makeLogoutController());

@@ -1,31 +1,11 @@
-export interface User {
-  id: string
-  name: string
-  email: string
-}
+import type { AppointmentJSON, PetJSON, UserJSON } from '@/entities'
 
-export interface Pet {
-  id: string
-  name: string
-  type: string
-  age: string
-  weight: string
-  breed: string
-  vaccine: string
-  icon: string
-  description: string
-}
+export type User = UserJSON
 
-export interface Appointment {
-  id: string
-  petId: string
-  pet: string
-  title: string
-  category: string
-  date: string
-  time: string
-  notes: string
+export type Pet = PetJSON
+
+export type Appointment = AppointmentJSON
+
+export type AppointmentInput = Omit<Appointment, 'id' | 'pet' | 'completed'> & {
   completed?: boolean
 }
-
-export type AppointmentInput = Omit<Appointment, 'id' | 'pet'>
