@@ -4,6 +4,8 @@ import type { PasswordHasher } from "@/usecases/ports/password-hasher";
 import type { PetRepository } from "@/usecases/ports/pet-repository";
 import type { SessionRepository } from "@/usecases/ports/session-repository";
 import type { UserRepository } from "@/usecases/ports/user-repository";
+import { ValidationError } from "@/validators/validation-error";
+import type { Validator } from "@/validators/validator";
 
 export class InMemoryUserRepository implements UserRepository {
   users: User[] = [];
@@ -90,3 +92,11 @@ export const fakeHasher: PasswordHasher = {
   hash: async (password) => `hashed:${password}`,
   verify: async (password, hash) => hash === `hashed:${password}`,
 };
+
+export const passThroughValidator = <T>(): Validator<T> => ({ validate: (input) => input as T });
+
+export const rejectingValidator = <T>(message: string): Validator<T> => ({
+  validate: () => {
+    throw new ValidationError(message);
+  },
+});

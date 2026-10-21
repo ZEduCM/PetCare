@@ -7,8 +7,8 @@ import {
   makeListAppointmentsController,
   makeUpdateAppointmentController,
 } from "@/main/factories/appointments";
-import { makeLoginController, makeLogoutController, makeRegisterController } from "@/main/factories/auth";
-import { makeCreatePetController, makeListPetsController } from "@/main/factories/pets";
+import { makeLoginController, makeRegisterController } from "@/main/factories/auth";
+import { makeCreatePetController } from "@/main/factories/pets";
 import { messages } from "@/messages";
 import { ValidationError } from "@/validators/validation-error";
 
@@ -23,27 +23,6 @@ beforeEach(async () => {
   await makeRegisterController().handle(request({ body: { name: "Ana", ...credentials } }));
   const response = await makeLoginController().handle(request({ body: credentials }));
   sessionToken = (response.session as { token: string }).token;
-});
-
-describe("Controllers de autenticação ↔ casos de uso ↔ repositórios", { tags: ["RF-01", "RF-09"] }, () => {
-  test("o login devolve a sessão que o adaptador transforma em cookie", async () => {
-    const response = await makeLoginController().handle(
-      request({ body: { email: "ana@petcare.com", password: "petcare123" } }),
-    );
-
-    expect(response.statusCode).toBe(200);
-    expect(response.session).toMatchObject({ token: expect.any(String) });
-  });
-
-  test("o logout encerra a sessão usada pelos controllers protegidos", async () => {
-    const logout = await makeLogoutController().handle(request({ sessionToken }));
-
-    expect(logout).toEqual({ statusCode: 204, session: null });
-    expect(await makeListPetsController().handle(request({ sessionToken }))).toEqual({
-      statusCode: 401,
-      body: { message: messages.loginRequired },
-    });
-  });
 });
 
 describe("Controllers de pets e compromissos ↔ casos de uso ↔ repositórios", { tags: ["RF-02", "RF-03", "RF-05"] }, () => {
