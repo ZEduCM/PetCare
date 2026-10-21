@@ -1,4 +1,4 @@
-import type { User } from "@/types";
+import type { User } from "@/entities";
 import { pool } from "../db";
 
 export async function getSessionUser(token: string): Promise<User | null> {

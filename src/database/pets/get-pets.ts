@@ -1,4 +1,4 @@
-import type { Pet } from "@/types";
+import type { Pet } from "@/entities";
 import { pool } from "../db";
 import { petColumns } from "./columns";
 

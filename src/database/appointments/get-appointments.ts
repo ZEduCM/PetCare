@@ -1,4 +1,4 @@
-import type { Appointment } from "@/types";
+import type { Appointment } from "@/entities";
 import { pool } from "../db";
 import { appointmentColumns } from "./columns";
 

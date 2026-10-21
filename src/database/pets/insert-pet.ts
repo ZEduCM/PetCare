@@ -1,18 +1,8 @@
 
-import type { Pet } from "@/types";
+import type { Pet, PetInput } from "@/entities";
 import { pool } from "../db";
 import { petColumns } from "./columns";
 
-export interface PetInput {
-  name: string;
-  type: string;
-  breed: string;
-  age: string;
-  weight: string;
-  vaccine: string;
-  icon: string;
-  description: string;
-}
 
 export async function insertPet(
   userId: string,

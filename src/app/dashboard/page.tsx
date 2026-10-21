@@ -11,7 +11,7 @@ import SummaryCard from '@/components/SummaryCard'
 import Modal from '@/components/Modal'
 import { errorBanner, secondaryButton } from '@/components/ui'
 import { api, errorMessage } from '@/services/api'
-import type { Appointment, Pet } from '@/types'
+import type { Appointment, Pet } from '@/entities'
 
 const placeholder =
   'rounded-[14px] border border-dashed border-line bg-white p-[35px] text-center text-muted'

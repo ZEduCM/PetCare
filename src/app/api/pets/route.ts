@@ -1,6 +1,6 @@
 
 import type { NextRequest } from "next/server";
-import type { PetInput } from "@/database/pets/insert-pet";
+import type { PetInput } from "@/entities";
 import { getPets } from "@/database/pets/get-pets";
 import { insertPet } from "@/database/pets/insert-pet";
 import { currentUser, unauthorized } from "@/lib/session";

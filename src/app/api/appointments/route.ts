@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import type { AppointmentInput } from "@/types";
+import type { AppointmentInput } from "@/entities";
 import { deleteAppointment } from "@/database/appointments/delete-appointment";
 import { getAppointments } from "@/database/appointments/get-appointments";
 import { insertAppointment } from "@/database/appointments/insert-appointment";

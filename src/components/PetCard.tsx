@@ -1,6 +1,6 @@
 
 import Link from 'next/link'
-import type { Pet } from '@/types'
+import type { Pet } from '@/entities'
 
 export default function PetCard({ pet }: { pet: Pet }) {
   const petIcon =

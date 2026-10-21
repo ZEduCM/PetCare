@@ -1,4 +1,4 @@
-import type { User } from "@/types";
+import type { User } from "@/entities";
 import { hashPassword } from "@/lib/password";
 import { pool } from "../db";
 
