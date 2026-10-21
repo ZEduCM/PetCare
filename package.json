@@ -13,6 +13,8 @@
     "test:unit": "vitest run --project unit --project components",
     "test:integration": "vitest run --project integration",
     "test:e2e": "next build && playwright test",
+    "test:performance": "next build && node scripts/performance.mjs",
+    "test:all": "vitest run && next build && playwright test && node scripts/performance.mjs",
     "db:setup": "node --env-file-if-exists=.env scripts/db-setup.mjs"
   },
   "dependencies": {
