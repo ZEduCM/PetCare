@@ -71,11 +71,14 @@ export function errorResponse(error: unknown): HttpResponse {
 }
 
 export function optionalText(value: unknown) {
-  if (typeof value === "string") return value;
-  if (typeof value === "number" && Number.isFinite(value)) return String(value);
-  return undefined;
+  return typeof value === "string" ? value : undefined;
 }
 
 export function text(value: unknown) {
   return optionalText(value) ?? "";
+}
+
+export function numberText(value: unknown) {
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  return text(value);
 }

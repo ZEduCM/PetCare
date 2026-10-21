@@ -4,7 +4,7 @@ import { ListAppointmentsController } from "@/controllers/appointments/list-appo
 import { UpdateAppointmentController } from "@/controllers/appointments/update-appointment-controller";
 import { LoginController } from "@/controllers/auth/login-controller";
 import { LogoutController } from "@/controllers/auth/logout-controller";
-import { optionalText, text } from "@/controllers/http";
+import { numberText, optionalText, text } from "@/controllers/http";
 import { CreatePetController } from "@/controllers/pets/create-pet-controller";
 import { ListPetsController } from "@/controllers/pets/list-pets-controller";
 import { Appointment, Pet, Session, User } from "@/entities";
@@ -43,6 +43,13 @@ describe("helpers de texto", { tags: ["RF-04"] }, () => {
     expect(optionalText(null)).toBeUndefined();
     expect(optionalText(123)).toBeUndefined();
     expect(optionalText("")).toBe("");
+  });
+
+  test("numberText aceita textos e números finitos", () => {
+    expect(numberText("3")).toBe("3");
+    expect(numberText(3.5)).toBe("3.5");
+    expect(numberText(Number.NaN)).toBe("");
+    expect(numberText(undefined)).toBe("");
   });
 });
 

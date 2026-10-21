@@ -3,6 +3,7 @@ import type { CreatePetInput } from "@/usecases/pets/create-pet";
 import type { UseCase } from "@/usecases/use-case";
 import {
   created,
+  numberText,
   optionalText,
   text,
   type AuthenticatedRequest,
@@ -19,8 +20,8 @@ export class CreatePetController implements Controller<AuthenticatedRequest> {
         name: text(body.name),
         type: text(body.type),
         breed: text(body.breed),
-        age: text(body.age),
-        weight: text(body.weight),
+        age: numberText(body.age),
+        weight: numberText(body.weight),
         vaccine: optionalText(body.vaccine),
         icon: optionalText(body.icon),
         description: optionalText(body.description),
