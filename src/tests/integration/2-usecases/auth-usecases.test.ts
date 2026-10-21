@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { PostgresSessionRepository } from "@/database/sessions/postgres-session-repository";
-import { PostgresUserRepository } from "@/database/users/postgres-user-repository";
+import { PostgresSessionRepository } from "@/repositories/sessions/postgres-session-repository";
+import { PostgresUserRepository } from "@/repositories/users/postgres-user-repository";
 import { pool } from "@/database/db";
 import { ScryptPasswordHasher } from "@/lib/password";
 import { RandomTokenGenerator } from "@/lib/token";

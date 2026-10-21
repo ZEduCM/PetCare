@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { pool } from "@/database/db";
-import { PostgresSessionRepository } from "@/database/sessions/postgres-session-repository";
-import { PostgresUserRepository } from "@/database/users/postgres-user-repository";
+import { PostgresSessionRepository } from "@/repositories/sessions/postgres-session-repository";
+import { PostgresUserRepository } from "@/repositories/users/postgres-user-repository";
 import { Session, User } from "@/entities";
 
 const users = new PostgresUserRepository(pool);

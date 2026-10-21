@@ -1,8 +1,8 @@
-import { PostgresAppointmentRepository } from "@/database/appointments/postgres-appointment-repository";
+import { PostgresAppointmentRepository } from "@/repositories/appointments/postgres-appointment-repository";
 import { pool } from "@/database/db";
-import { PostgresPetRepository } from "@/database/pets/postgres-pet-repository";
-import { PostgresSessionRepository } from "@/database/sessions/postgres-session-repository";
-import { PostgresUserRepository } from "@/database/users/postgres-user-repository";
+import { PostgresPetRepository } from "@/repositories/pets/postgres-pet-repository";
+import { PostgresSessionRepository } from "@/repositories/sessions/postgres-session-repository";
+import { PostgresUserRepository } from "@/repositories/users/postgres-user-repository";
 
 export const makeUserRepository = () => new PostgresUserRepository(pool);
 
