@@ -16,7 +16,7 @@ test.describe("Autenticação", () => {
     await page.getByLabel("Senha", { exact: true }).fill("errada123");
     await page.getByRole("button", { name: "Entrar" }).click();
 
-    await expect(page.getByRole("main").getByRole("alert")).toHaveText("Invalid email or password.");
+    await expect(page.getByRole("main").getByRole("alert")).toHaveText("E-mail ou senha inválidos.");
     await expect(page).toHaveURL(/\/login$/);
   });
 
@@ -37,7 +37,7 @@ test.describe("Autenticação", () => {
     await page.getByLabel("Confirmar senha").fill(tutor.password);
     await page.getByRole("button", { name: "Criar conta" }).click();
 
-    await expect(page.getByRole("main").getByRole("status")).toContainText("User registered successfully.");
+    await expect(page.getByRole("main").getByRole("status")).toContainText("Usuário cadastrado com sucesso!");
     for (const label of ["Nome completo", "E-mail", "Confirmar senha"]) {
       await expect(page.getByLabel(label)).toHaveValue("");
     }
@@ -49,7 +49,7 @@ test.describe("Autenticação", () => {
       { step: "(a) senha com 7 caracteres", email: newTutor().email, password: "1234567", confirm: "1234567", message: "A senha deve ter pelo menos 8 caracteres." },
       { step: "(b) senhas diferentes", email: newTutor().email, password: "senha1234", confirm: "senha9999", message: "As senhas não coincidem." },
       { step: "(c) e-mail sem domínio", email: "ana@email", password: "senha1234", confirm: "senha1234", message: "Informe um e-mail válido." },
-      { step: "(d) e-mail já cadastrado", email: demo.email, password: "senha1234", confirm: "senha1234", message: "This email is already registered." },
+      { step: "(d) e-mail já cadastrado", email: demo.email, password: "senha1234", confirm: "senha1234", message: "Este e-mail já está cadastrado." },
     ];
 
     await page.goto("/cadastro");
@@ -86,7 +86,7 @@ test.describe("Autenticação", () => {
 
       await page.goto("/dashboard");
 
-      await expect(page.getByRole("main").getByRole("alert")).toContainText("Please log in to continue.");
+      await expect(page.getByRole("main").getByRole("alert")).toContainText("Faça login para continuar.");
       await expect(page.locator('main a[href^="/pets/"]')).toHaveCount(0);
       await expect(page).toHaveURL(/\/dashboard$/);
     },
