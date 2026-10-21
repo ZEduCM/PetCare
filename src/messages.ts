@@ -2,6 +2,7 @@ export const messages = {
   requiredFields: "Fill in all required fields.",
   invalidEmail: "Enter a valid email address.",
   shortPassword: "Password must be at least 8 characters.",
+  invalidAge: "Age must be a whole number from 0 to 100.",
   invalidDate: "Enter a valid date.",
   invalidTime: "Enter a valid time.",
   invalidVaccineDate: "Enter a valid vaccine date.",

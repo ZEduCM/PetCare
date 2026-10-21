@@ -10,11 +10,11 @@ insert into pets (user_id, name, type, breed, age, weight, next_vaccine, icon, d
 select u.id, p.name, p.type, p.breed, p.age, p.weight, p.next_vaccine::date, p.icon, p.description
 from users u
 cross join (values
-  ('Nina', 'Coelho', 'Mini Lop', '2 anos', '1,8 kg', '2026-10-15', '🐰',
+  ('Nina', 'Coelho', 'Mini Lop', '2', '1,8 kg', '2026-10-15', '🐰',
    'Carinhosa e tranquila. Gosta de feno e de ficar em lugares aconchegantes.'),
-  ('Mimi', 'Gato', 'SRD', '3 anos', '4,2 kg', '2026-10-22', '🐱',
+  ('Mimi', 'Gato', 'SRD', '3', '4,2 kg', '2026-10-22', '🐱',
    'Curiosa e brincalhona. Adora brinquedos com penas e horários certinhos para comer.'),
-  ('Thor', 'Cão', 'Golden Retriever', '4 anos', '12 kg', '2026-10-20', '🐶',
+  ('Thor', 'Cão', 'Golden Retriever', '4', '12 kg', '2026-10-20', '🐶',
    'Muito ativo e companheiro. Gosta de passeios, banho e bastante atenção.')
 ) as p (name, type, breed, age, weight, next_vaccine, icon, description)
 where u.email = 'demo@petcare.com'

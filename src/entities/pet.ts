@@ -33,7 +33,10 @@ const validator = new ZodValidator(
     name: requiredText(messages.requiredFields),
     type: requiredText(messages.requiredFields),
     breed: requiredText(messages.requiredFields),
-    age: requiredText(messages.requiredFields),
+    age: requiredText(messages.requiredFields)
+      .regex(/^\d+$/, messages.invalidAge)
+      .refine((age) => Number(age) <= 100, messages.invalidAge)
+      .transform((age) => String(Number(age))),
     weight: requiredText(messages.requiredFields),
     vaccine: z
       .literal("")
