@@ -21,15 +21,15 @@ const appointmentData = {
   time: "09:30",
 };
 
-describe("User", () => {
-  test("keeps the given id and generates one when it is missing", () => {
+describe("User", { tags: ["RF-01"] }, () => {
+  test("mantém o id informado e gera um quando falta", () => {
     const data = { name: "Ana", email: "ana@petcare.com", passwordHash: "hash" };
 
     expect(new User({ ...data, id: "user-1" }).id).toBe("user-1");
     expect(new User(data).id).not.toBe(new User(data).id);
   });
 
-  test("normalizes name and email and hides the password hash in JSON", () => {
+  test("normaliza nome e e-mail e esconde o hash da senha no JSON", () => {
     const user = new User({ name: " Ana ", email: " Ana@PetCare.com ", passwordHash: "hash" });
 
     expect(user.id).toMatch(/^[0-9a-f-]{36}$/);
@@ -39,7 +39,7 @@ describe("User", () => {
     expect(JSON.parse(JSON.stringify(user))).toEqual({ id: user.id, name: "Ana", email: "ana@petcare.com" });
   });
 
-  test("rejects missing fields and invalid emails", () => {
+  test("recusa campos ausentes e e-mails inválidos", () => {
     expect(() => new User({ name: "", email: "ana@petcare.com", passwordHash: "hash" })).toThrow(
       new ValidationError(messages.requiredFields),
     );
@@ -49,16 +49,16 @@ describe("User", () => {
   });
 });
 
-describe("Password", () => {
-  test("requires at least 8 characters", () => {
+describe("Password", { tags: ["RF-01", "RF-04"] }, () => {
+  test("exige pelo menos 8 caracteres", () => {
     expect(() => new Password("")).toThrow(new ValidationError(messages.requiredFields));
     expect(() => new Password("1234567")).toThrow(new ValidationError(messages.shortPassword));
     expect(new Password("12345678").value).toBe("12345678");
   });
 });
 
-describe("Session", () => {
-  test("expires in seven days", () => {
+describe("Session", { tags: ["RF-01"] }, () => {
+  test("expira em sete dias", () => {
     const now = new Date("2026-10-21T12:00:00Z");
 
     const session = new Session("token", "user-1", now);
@@ -67,8 +67,8 @@ describe("Session", () => {
   });
 });
 
-describe("Pet", () => {
-  test("applies defaults and hides the owner in JSON", () => {
+describe("Pet", { tags: ["RF-02", "RF-04"] }, () => {
+  test("aplica os valores padrão e esconde o dono no JSON", () => {
     expect(rex.vaccine).toBe("");
     expect(rex.icon).toBe("🐾");
     expect(rex.description).toBe("");
@@ -76,7 +76,7 @@ describe("Pet", () => {
     expect(JSON.parse(JSON.stringify(rex))).not.toHaveProperty("ownerId");
   });
 
-  test("rejects missing fields and invalid vaccine dates", () => {
+  test("recusa campos ausentes e datas de vacina inválidas", () => {
     expect(() => new Pet({ ownerId: "user-1", name: "Rex", type: "", breed: "SRD", age: "3", weight: "12" })).toThrow(
       new ValidationError(messages.requiredFields),
     );
@@ -86,8 +86,8 @@ describe("Pet", () => {
   });
 });
 
-describe("Appointment", () => {
-  test("is created pending, linked to the pet", () => {
+describe("Appointment", { tags: ["RF-03", "RF-04"] }, () => {
+  test("nasce pendente e ligado ao pet", () => {
     const appointment = new Appointment(appointmentData);
 
     expect(appointment.toJSON()).toEqual({
@@ -103,13 +103,13 @@ describe("Appointment", () => {
     });
   });
 
-  test("rejects invalid data loaded from storage", () => {
+  test("recusa dados inválidos lidos do banco", () => {
     expect(() => new Appointment({ ...appointmentData, id: "appointment-1", title: "  " })).toThrow(
       new ValidationError(messages.requiredFields),
     );
   });
 
-  test("rejects invalid dates and times", () => {
+  test("recusa datas e horários inválidos", () => {
     expect(() => new Appointment({ ...appointmentData, date: "10/11/2026" })).toThrow(
       new ValidationError(messages.invalidDate),
     );
@@ -118,7 +118,7 @@ describe("Appointment", () => {
     );
   });
 
-  test("updates only the given fields", () => {
+  test("altera só os campos informados", () => {
     const appointment = new Appointment(appointmentData);
     const mimi = new Pet({ ownerId: "user-1", name: "Mimi", type: "Gato", breed: "SRD", age: "2", weight: "4" });
 
@@ -130,7 +130,7 @@ describe("Appointment", () => {
     expect(appointment.title).toBe("Vacina");
   });
 
-  test("keeps its state when an update is invalid", () => {
+  test("mantém o estado quando a alteração é inválida", () => {
     const appointment = new Appointment(appointmentData);
 
     expect(() => appointment.update({ title: " ", completed: true })).toThrow(
