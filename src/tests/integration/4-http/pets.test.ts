@@ -99,6 +99,12 @@ describe("POST /api/pets", { tags: ["RF-02", "RF-04"] }, () => {
     expect(response.body).toMatchObject({ icon: "🐾", vaccine: "", description: "" });
   });
 
+  test("idade 100 é aceita (limite superior)", async () => {
+    const { client } = await signedIn();
+
+    expect((await client.post("/api/pets", { ...validPet, age: 100 })).status).toBe(201);
+  });
+
   test("PET-09 — idade 0 é aceita", async () => {
     const { client } = await signedIn();
 
@@ -124,5 +130,29 @@ describe("POST /api/pets", { tags: ["RF-02", "RF-04"] }, () => {
 
     expect(response).toEqual({ status: 400, body: { message: messages.invalidVaccineDate } });
     expect(await countPets()).toBe(0);
+  });
+});
+
+describe("Defeitos do cadastro de pet", { tags: ["RF-02", "RF-04"] }, () => {
+  async function expectRejected(change: Record<string, unknown>) {
+    const { client } = await signedIn();
+
+    const response = await client.post("/api/pets", { ...validPet, ...change });
+
+    expect(response.status).toBe(400);
+    expect(await countPets()).toBe(0);
+    return response;
+  }
+
+  test("DEF-01 — idade negativa responde 400", async () => {
+    expect((await expectRejected({ age: -5 })).body).toEqual({ message: messages.invalidAge });
+  });
+
+  test("DEF-02 — idade acima de 100 responde 400", async () => {
+    expect((await expectRejected({ age: 101 })).body).toEqual({ message: messages.invalidAge });
+  });
+
+  test.each(["abc", "2.5", "2 anos"])("DEF-04 — idade não numérica (%s) responde 400", async (age) => {
+    expect((await expectRejected({ age })).body).toEqual({ message: messages.invalidAge });
   });
 });
