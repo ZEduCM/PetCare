@@ -3,9 +3,10 @@ import { Pet } from "@/entities";
 import { messages } from "@/messages";
 import { CreateAppointment } from "@/usecases/appointments/create-appointment";
 import { DeleteAppointment } from "@/usecases/appointments/delete-appointment";
+import { ListAppointments } from "@/usecases/appointments/list-appointments";
 import { UpdateAppointment } from "@/usecases/appointments/update-appointment";
 import { NotFoundError } from "@/usecases/errors";
-import { InMemoryAppointmentRepository, InMemoryPetRepository } from "./fakes";
+import { InMemoryAppointmentRepository, InMemoryPetRepository } from "@/tests/support/fakes";
 
 const USER_ID = "user-1";
 
@@ -23,13 +24,14 @@ function setup() {
     create: new CreateAppointment(appointments, pets),
     update: new UpdateAppointment(appointments, pets),
     remove: new DeleteAppointment(appointments),
+    list: new ListAppointments(appointments),
   };
 }
 
 const details = { title: "Vacina", category: "Saúde", date: "2026-11-10", time: "09:30" };
 
-describe("CreateAppointment", () => {
-  test("creates an appointment for one of the user's pets", async () => {
+describe("CreateAppointment", { tags: ["RF-03"] }, () => {
+  test("cria um compromisso para um pet do usuário", async () => {
     const { create, rex, appointments } = setup();
 
     const appointment = await create.execute({ userId: USER_ID, data: { ...details, petId: rex.id } });
@@ -38,7 +40,7 @@ describe("CreateAppointment", () => {
     expect(appointments.appointments).toEqual([appointment]);
   });
 
-  test("fails when the pet belongs to another user", async () => {
+  test("falha quando o pet é de outro usuário", async () => {
     const { create, strangerPet } = setup();
 
     await expect(
@@ -47,8 +49,8 @@ describe("CreateAppointment", () => {
   });
 });
 
-describe("UpdateAppointment", () => {
-  test("applies the changes and saves the appointment", async () => {
+describe("UpdateAppointment", { tags: ["RF-03"] }, () => {
+  test("aplica as alterações e salva o compromisso", async () => {
     const { create, update, rex, appointments } = setup();
     const { id } = await create.execute({ userId: USER_ID, data: { ...details, petId: rex.id } });
 
@@ -59,7 +61,7 @@ describe("UpdateAppointment", () => {
     expect(appointments.appointments[0].completed).toBe(true);
   });
 
-  test("fails when the new pet belongs to another user", async () => {
+  test("falha quando o novo pet é de outro usuário", async () => {
     const { create, update, rex, strangerPet } = setup();
     const appointment = await create.execute({ userId: USER_ID, data: { ...details, petId: rex.id } });
 
@@ -69,7 +71,7 @@ describe("UpdateAppointment", () => {
     expect(appointment.title).toBe("Vacina");
   });
 
-  test("fails when the appointment does not exist", async () => {
+  test("falha quando o compromisso não existe", async () => {
     const { update } = setup();
 
     await expect(update.execute({ userId: USER_ID, id: "missing", data: { title: "Banho" } })).rejects.toThrow(
@@ -78,8 +80,19 @@ describe("UpdateAppointment", () => {
   });
 });
 
-describe("DeleteAppointment", () => {
-  test("deletes the user's appointment", async () => {
+describe("ListAppointments", { tags: ["RF-03", "RF-09"] }, () => {
+  test("retorna só os compromissos dos pets do usuário", async () => {
+    const { create, list, rex, strangerPet, appointments } = setup();
+    const mine = await create.execute({ userId: USER_ID, data: { ...details, petId: rex.id } });
+    await create.execute({ userId: "user-2", data: { ...details, petId: strangerPet.id } });
+
+    expect(appointments.appointments).toHaveLength(2);
+    expect(await list.execute({ userId: USER_ID })).toEqual([mine]);
+  });
+});
+
+describe("DeleteAppointment", { tags: ["RF-03"] }, () => {
+  test("exclui o compromisso do usuário", async () => {
     const { create, remove, rex, appointments } = setup();
     const { id } = await create.execute({ userId: USER_ID, data: { ...details, petId: rex.id } });
 
@@ -88,7 +101,7 @@ describe("DeleteAppointment", () => {
     expect(appointments.appointments).toEqual([]);
   });
 
-  test("does not delete another user's appointment", async () => {
+  test("não exclui o compromisso de outro usuário", async () => {
     const { create, remove, rex, appointments } = setup();
     const { id } = await create.execute({ userId: USER_ID, data: { ...details, petId: rex.id } });
 

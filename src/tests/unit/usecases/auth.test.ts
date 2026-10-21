@@ -4,12 +4,12 @@ import { Login } from "@/usecases/auth/login";
 import { RegisterUser } from "@/usecases/auth/register-user";
 import { ConflictError, UnauthorizedError } from "@/usecases/errors";
 import { ValidationError } from "@/validators/validation-error";
-import { InMemorySessionRepository, InMemoryUserRepository, fakeHasher } from "./fakes";
+import { InMemorySessionRepository, InMemoryUserRepository, fakeHasher } from "@/tests/support/fakes";
 
 const ana = { name: "Ana", email: "ana@petcare.com", password: "petcare123" };
 
-describe("RegisterUser", () => {
-  test("stores a normalized user with the hashed password", async () => {
+describe("RegisterUser", { tags: ["RF-01"] }, () => {
+  test("grava o usuário normalizado com a senha em hash", async () => {
     const users = new InMemoryUserRepository();
 
     const user = await new RegisterUser(users, fakeHasher).execute({
@@ -23,7 +23,7 @@ describe("RegisterUser", () => {
     expect(user.passwordHash).toBe("hashed:petcare123");
   });
 
-  test("rejects a short password", async () => {
+  test("recusa senha curta", async () => {
     const users = new InMemoryUserRepository();
 
     await expect(new RegisterUser(users, fakeHasher).execute({ ...ana, password: "123" })).rejects.toThrow(
@@ -32,7 +32,7 @@ describe("RegisterUser", () => {
     expect(users.users).toEqual([]);
   });
 
-  test("rejects an email that is already registered", async () => {
+  test("recusa e-mail já cadastrado", async () => {
     const registerUser = new RegisterUser(new InMemoryUserRepository(), fakeHasher);
     await registerUser.execute(ana);
 
@@ -40,7 +40,7 @@ describe("RegisterUser", () => {
   });
 });
 
-describe("Login", () => {
+describe("Login", { tags: ["RF-01"] }, () => {
   async function setup() {
     const users = new InMemoryUserRepository();
     const sessions = new InMemorySessionRepository(users);
@@ -49,7 +49,7 @@ describe("Login", () => {
     return { login, sessions };
   }
 
-  test("creates a session for valid credentials", async () => {
+  test("cria uma sessão para credenciais válidas", async () => {
     const { login, sessions } = await setup();
 
     const { user, session } = await login.execute({ email: " ana@petcare.com ", password: "petcare123" });
@@ -60,7 +60,7 @@ describe("Login", () => {
     expect(sessions.sessions).toEqual([session]);
   });
 
-  test("rejects a wrong password or an unknown email", async () => {
+  test("recusa senha errada ou e-mail desconhecido", async () => {
     const { login, sessions } = await setup();
 
     await expect(login.execute({ email: ana.email, password: "wrong-password" })).rejects.toThrow(
