@@ -10,6 +10,8 @@
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest",
+    "test:unit": "vitest run --project unit --project components",
+    "test:integration": "vitest run --project integration",
     "db:setup": "node --env-file-if-exists=.env scripts/db-setup.mjs"
   },
   "dependencies": {
@@ -22,6 +24,8 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@electric-sql/pglite-socket": "^0.2.13",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^24.19.1",
     "@types/pg": "^8.23.1",
