@@ -31,17 +31,17 @@ const rejecting = <T>(message: string): Validator<T> => ({
 });
 
 describe("helpers de texto", { tags: ["RF-04"] }, () => {
-  test("text converte textos e números finitos e usa texto vazio como padrão", () => {
+  test("text aceita só textos e usa texto vazio como padrão", () => {
     expect(text("Luna")).toBe("Luna");
-    expect(text(3.5)).toBe("3.5");
+    expect(text(123)).toBe("");
     expect(text(undefined)).toBe("");
     expect(text({ name: "Luna" })).toBe("");
-    expect(text(Number.NaN)).toBe("");
   });
 
-  test("optionalText deixa valores ausentes como undefined", () => {
+  test("optionalText deixa como undefined valores ausentes ou que não são texto", () => {
     expect(optionalText(undefined)).toBeUndefined();
     expect(optionalText(null)).toBeUndefined();
+    expect(optionalText(123)).toBeUndefined();
     expect(optionalText("")).toBe("");
   });
 });
