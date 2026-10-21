@@ -2,7 +2,6 @@ import type { DeleteAppointmentInput } from "@/usecases/appointments/delete-appo
 import type { UseCase } from "@/usecases/use-case";
 import type { Validator } from "@/validators/validator";
 import {
-  badRequest,
   noContent,
   type AuthenticatedRequest,
   type Controller,
@@ -12,15 +11,12 @@ export class DeleteAppointmentController
   implements Controller<AuthenticatedRequest>
 {
   constructor(
-    private readonly validator: Validator,
+    private readonly validator: Validator<{ id: string }>,
     private readonly deleteAppointment: UseCase<DeleteAppointmentInput, void>,
   ) {}
 
   async handle({ query, user }: AuthenticatedRequest) {
-    const id = query.id ?? "";
-    const error = this.validator.validate({ id });
-    if (error) return badRequest(error);
-
+    const { id } = this.validator.validate(query);
     await this.deleteAppointment.execute({ userId: user.id, id });
     return noContent();
   }

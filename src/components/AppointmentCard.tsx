@@ -1,5 +1,5 @@
 import { CalendarDays, Check, Clock3, Eye, Pencil, Trash2 } from 'lucide-react'
-import type { Appointment } from '@/entities'
+import type { Appointment } from '@/types'
 
 const categoryIcon: Record<string, string> = {
   Alimentação: '🍽️',

@@ -3,7 +3,6 @@ import type { CreateAppointmentInput } from "@/usecases/appointments/create-appo
 import type { UseCase } from "@/usecases/use-case";
 import type { Validator } from "@/validators/validator";
 import {
-  badRequest,
   created,
   optionalText,
   text,
@@ -15,7 +14,7 @@ export class CreateAppointmentController
   implements Controller<AuthenticatedRequest>
 {
   constructor(
-    private readonly validator: Validator,
+    private readonly validator: Validator<{ petId: string }>,
     private readonly createAppointment: UseCase<
       CreateAppointmentInput,
       Appointment
@@ -23,19 +22,18 @@ export class CreateAppointmentController
   ) {}
 
   async handle({ body, user }: AuthenticatedRequest) {
-    const data = {
-      petId: text(body.petId),
-      title: text(body.title),
-      category: text(body.category),
-      date: text(body.date),
-      time: text(body.time),
-      notes: optionalText(body.notes),
-    };
-    const error = this.validator.validate(data);
-    if (error) return badRequest(error);
-
-    return created(
-      await this.createAppointment.execute({ userId: user.id, data }),
-    );
+    const { petId } = this.validator.validate(body);
+    const appointment = await this.createAppointment.execute({
+      userId: user.id,
+      data: {
+        petId,
+        title: text(body.title),
+        category: text(body.category),
+        date: text(body.date),
+        time: text(body.time),
+        notes: optionalText(body.notes),
+      },
+    });
+    return created(appointment);
   }
 }

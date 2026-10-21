@@ -3,7 +3,7 @@ import type {
   AppointmentInput,
   Pet,
   User,
-} from "@/entities";
+} from "@/types";
 
 const DEFAULT_ERROR = "Não foi possível concluir a operação.";
 

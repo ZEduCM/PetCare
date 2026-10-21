@@ -1,4 +1,5 @@
-import type { User } from "@/entities";
+import { Password, User } from "@/entities";
+import { messages } from "@/messages";
 import { ConflictError } from "../errors";
 import type { PasswordHasher } from "../ports/password-hasher";
 import type { UserRepository } from "../ports/user-repository";
@@ -17,15 +18,18 @@ export class RegisterUser implements UseCase<RegisterUserInput, User> {
   ) {}
 
   async execute(input: RegisterUserInput) {
-    const email = input.email.trim().toLowerCase();
-    if (await this.users.findByEmail(email)) {
-      throw new ConflictError("Este e-mail já está cadastrado.");
+    const password = new Password(input.password);
+    const user = new User({
+      name: input.name,
+      email: input.email,
+      passwordHash: await this.hasher.hash(password.value),
+    });
+
+    if (await this.users.findByEmail(user.email)) {
+      throw new ConflictError(messages.emailTaken);
     }
 
-    return this.users.create({
-      name: input.name.trim(),
-      email,
-      password: await this.hasher.hash(input.password),
-    });
+    await this.users.create(user);
+    return user;
   }
 }

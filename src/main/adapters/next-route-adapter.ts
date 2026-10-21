@@ -7,6 +7,7 @@ import {
   type HttpResponse,
 } from "@/controllers/http";
 import { SESSION_COOKIE } from "@/lib/session-cookie";
+import { messages } from "@/messages";
 
 type CookieStore = Awaited<ReturnType<typeof cookies>>;
 
@@ -47,7 +48,7 @@ function toResponse({ statusCode, body }: HttpResponse) {
 export function adaptRoute(controller: Controller) {
   return async (request: NextRequest) => {
     const body = await readBody(request);
-    if (!body) return toResponse(badRequest("Dados inválidos."));
+    if (!body) return toResponse(badRequest(messages.invalidBody));
 
     const store = await cookies();
     let response: HttpResponse;

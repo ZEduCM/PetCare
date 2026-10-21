@@ -1,7 +1,7 @@
-import type { Pet, PetInput } from "@/entities";
+import type { Pet } from "@/entities";
 
 export interface PetRepository {
   listByUser(userId: string): Promise<Pet[]>;
   findById(userId: string, id: string): Promise<Pet | null>;
-  create(userId: string, data: PetInput): Promise<Pet>;
+  create(pet: Pet): Promise<void>;
 }

@@ -1,0 +1,18 @@
+export const messages = {
+  requiredFields: "Fill in all required fields.",
+  invalidEmail: "Enter a valid email address.",
+  shortPassword: "Password must be at least 8 characters.",
+  invalidDate: "Enter a valid date.",
+  invalidTime: "Enter a valid time.",
+  invalidVaccineDate: "Enter a valid vaccine date.",
+  invalidId: "Enter a valid id.",
+  invalidBody: "Invalid request body.",
+  missingCredentials: "Enter your email and password to continue.",
+  invalidCredentials: "Invalid email or password.",
+  emailTaken: "This email is already registered.",
+  loginRequired: "Please log in to continue.",
+  petNotFound: "Pet not found.",
+  appointmentNotFound: "Appointment not found.",
+  userRegistered: "User registered successfully.",
+  unexpectedError: "Could not complete the operation.",
+} as const;

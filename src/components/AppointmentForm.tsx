@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import AppShell from './AppShell'
 import { backLink, card, errorBanner, eyebrow, fieldError, fieldInput, fieldLabel, primaryButton, secondaryButton } from './ui'
 import { api, errorMessage } from '../services/api'
-import type { AppointmentInput, Pet } from '@/entities'
+import type { AppointmentInput, Pet } from '@/types'
 
 type FormErrors = Partial<Record<keyof AppointmentInput, string>>
 

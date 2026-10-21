@@ -1,3 +1,4 @@
+import { messages } from "@/messages";
 import { NotFoundError } from "../errors";
 import type { AppointmentRepository } from "../ports/appointment-repository";
 import type { UseCase } from "../use-case";
@@ -12,7 +13,7 @@ export class DeleteAppointment implements UseCase<DeleteAppointmentInput, void> 
 
   async execute({ userId, id }: DeleteAppointmentInput) {
     if (!(await this.appointments.delete(userId, id))) {
-      throw new NotFoundError("Compromisso não encontrado.");
+      throw new NotFoundError(messages.appointmentNotFound);
     }
   }
 }

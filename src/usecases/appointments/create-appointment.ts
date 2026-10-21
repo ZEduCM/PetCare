@@ -1,25 +1,29 @@
-import type { Appointment, AppointmentInput } from "@/entities";
+import { Appointment, type AppointmentData } from "@/entities";
+import { messages } from "@/messages";
 import { NotFoundError } from "../errors";
 import type { AppointmentRepository } from "../ports/appointment-repository";
+import type { PetRepository } from "../ports/pet-repository";
 import type { UseCase } from "../use-case";
 
 export interface CreateAppointmentInput {
   userId: string;
-  data: Pick<AppointmentInput, "petId" | "title" | "category" | "date" | "time"> &
-    Partial<Pick<AppointmentInput, "notes">>;
+  data: Omit<AppointmentData, "id" | "petName" | "completed">;
 }
 
 export class CreateAppointment
   implements UseCase<CreateAppointmentInput, Appointment>
 {
-  constructor(private readonly appointments: AppointmentRepository) {}
+  constructor(
+    private readonly appointments: AppointmentRepository,
+    private readonly pets: PetRepository,
+  ) {}
 
   async execute({ userId, data }: CreateAppointmentInput) {
-    const appointment = await this.appointments.create(userId, {
-      ...data,
-      notes: data.notes ?? "",
-    });
-    if (!appointment) throw new NotFoundError("Pet não encontrado.");
+    const pet = await this.pets.findById(userId, data.petId);
+    if (!pet) throw new NotFoundError(messages.petNotFound);
+
+    const appointment = new Appointment({ ...data, petName: pet.name });
+    await this.appointments.create(appointment);
     return appointment;
   }
 }

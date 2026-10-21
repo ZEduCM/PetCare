@@ -1,4 +1,5 @@
-import type { Appointment, AppointmentInput } from "@/entities";
+import type { Appointment, AppointmentChanges } from "@/entities";
+import { messages } from "@/messages";
 import { NotFoundError } from "../errors";
 import type { AppointmentRepository } from "../ports/appointment-repository";
 import type { PetRepository } from "../ports/pet-repository";
@@ -7,7 +8,7 @@ import type { UseCase } from "../use-case";
 export interface UpdateAppointmentInput {
   userId: string;
   id: string;
-  data: Partial<AppointmentInput>;
+  data: Omit<AppointmentChanges, "pet"> & { petId?: string };
 }
 
 export class UpdateAppointment
@@ -18,16 +19,16 @@ export class UpdateAppointment
     private readonly pets: PetRepository,
   ) {}
 
-  async execute({ userId, id, data }: UpdateAppointmentInput) {
-    if (
-      data.petId !== undefined &&
-      !(await this.pets.findById(userId, data.petId))
-    ) {
-      throw new NotFoundError("Pet não encontrado.");
-    }
+  async execute({ userId, id, data: { petId, ...changes } }: UpdateAppointmentInput) {
+    const appointment = await this.appointments.findById(userId, id);
+    if (!appointment) throw new NotFoundError(messages.appointmentNotFound);
 
-    const appointment = await this.appointments.update(userId, id, data);
-    if (!appointment) throw new NotFoundError("Compromisso não encontrado.");
+    const pet =
+      petId === undefined ? undefined : await this.pets.findById(userId, petId);
+    if (pet === null) throw new NotFoundError(messages.petNotFound);
+
+    appointment.update({ ...changes, pet });
+    await this.appointments.update(appointment);
     return appointment;
   }
 }

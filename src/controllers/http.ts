@@ -1,9 +1,11 @@
 import type { Session, User } from "@/entities";
+import { messages } from "@/messages";
 import {
   ConflictError,
   NotFoundError,
   UnauthorizedError,
 } from "@/usecases/errors";
+import { ValidationError } from "@/validators/validation-error";
 
 export interface HttpRequest {
   body: Record<string, unknown>;
@@ -40,7 +42,7 @@ export const badRequest = (message: string): HttpResponse => ({
 });
 
 export const unauthorized = (
-  message = "Faça login para continuar.",
+  message: string = messages.loginRequired,
 ): HttpResponse => ({ statusCode: 401, body: { message } });
 
 export const notFound = (message: string): HttpResponse => ({
@@ -55,10 +57,11 @@ export const conflict = (message: string): HttpResponse => ({
 
 export const serverError = (): HttpResponse => ({
   statusCode: 500,
-  body: { message: "Não foi possível concluir a operação." },
+  body: { message: messages.unexpectedError },
 });
 
 export function errorResponse(error: unknown): HttpResponse {
+  if (error instanceof ValidationError) return badRequest(error.message);
   if (error instanceof NotFoundError) return notFound(error.message);
   if (error instanceof ConflictError) return conflict(error.message);
   if (error instanceof UnauthorizedError) return unauthorized(error.message);

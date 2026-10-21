@@ -1,29 +1,20 @@
+import { z } from "zod";
 import { CreateAppointmentController } from "@/controllers/appointments/create-appointment-controller";
 import { DeleteAppointmentController } from "@/controllers/appointments/delete-appointment-controller";
 import { ListAppointmentsController } from "@/controllers/appointments/list-appointments-controller";
 import { UpdateAppointmentController } from "@/controllers/appointments/update-appointment-controller";
+import { messages } from "@/messages";
 import { CreateAppointment } from "@/usecases/appointments/create-appointment";
 import { DeleteAppointment } from "@/usecases/appointments/delete-appointment";
 import { ListAppointments } from "@/usecases/appointments/list-appointments";
 import { UpdateAppointment } from "@/usecases/appointments/update-appointment";
-import { DateValidator } from "@/validators/date-validator";
-import { NotBlankFieldsValidator } from "@/validators/not-blank-fields-validator";
-import { RequiredFieldsValidator } from "@/validators/required-fields-validator";
-import { TimeValidator } from "@/validators/time-validator";
-import { UuidValidator } from "@/validators/uuid-validator";
-import { ValidatorComposite } from "@/validators/validator-composite";
+import { requiredText } from "@/validators/fields";
+import { ZodValidator } from "@/validators/zod-validator";
 import { withAuthentication } from "./auth";
 import { makeAppointmentRepository, makePetRepository } from "./repositories";
 
-const REQUIRED_FIELDS = ["petId", "title", "category", "date", "time"];
-const REQUIRED_MESSAGE = "Preencha todos os campos obrigatórios.";
-const ID_MESSAGE = "Informe um id válido.";
-
 const makeIdValidator = () =>
-  new ValidatorComposite([
-    new RequiredFieldsValidator(["id"], ID_MESSAGE),
-    new UuidValidator("id", ID_MESSAGE),
-  ]);
+  new ZodValidator(z.object({ id: z.uuid({ error: messages.invalidId }) }));
 
 export const makeListAppointmentsController = () =>
   withAuthentication(
@@ -35,24 +26,17 @@ export const makeListAppointmentsController = () =>
 export const makeCreateAppointmentController = () =>
   withAuthentication(
     new CreateAppointmentController(
-      new ValidatorComposite([
-        new RequiredFieldsValidator(REQUIRED_FIELDS, REQUIRED_MESSAGE),
-        new DateValidator("date"),
-        new TimeValidator("time"),
-      ]),
-      new CreateAppointment(makeAppointmentRepository()),
+      new ZodValidator(
+        z.object({ petId: requiredText(messages.requiredFields) }),
+      ),
+      new CreateAppointment(makeAppointmentRepository(), makePetRepository()),
     ),
   );
 
 export const makeUpdateAppointmentController = () =>
   withAuthentication(
     new UpdateAppointmentController(
-      new ValidatorComposite([
-        makeIdValidator(),
-        new NotBlankFieldsValidator(REQUIRED_FIELDS, REQUIRED_MESSAGE),
-        new DateValidator("date"),
-        new TimeValidator("time"),
-      ]),
+      makeIdValidator(),
       new UpdateAppointment(makeAppointmentRepository(), makePetRepository()),
     ),
   );

@@ -1,8 +1,6 @@
-import type { User, UserWithPassword } from "@/entities";
-
-export type NewUser = Omit<UserWithPassword, "id">;
+import type { User } from "@/entities";
 
 export interface UserRepository {
-  findByEmail(email: string): Promise<UserWithPassword | null>;
-  create(user: NewUser): Promise<User>;
+  findByEmail(email: string): Promise<User | null>;
+  create(user: User): Promise<void>;
 }
