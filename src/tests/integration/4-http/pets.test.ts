@@ -152,11 +152,19 @@ describe("Defeitos do cadastro de pet", { tags: ["RF-02", "RF-04"] }, () => {
     expect((await expectRejected({ age: 101 })).body).toEqual({ message: messages.invalidAge });
   });
 
+  test.fails.each([-1, 0])("DEF-03 — peso %s responde 400", async (weight) => {
+    await expectRejected({ weight });
+  });
+
   test.each(["abc", "2.5", "2 anos"])("DEF-04 — idade não numérica (%s) responde 400", async (age) => {
     expect((await expectRejected({ age })).body).toEqual({ message: messages.invalidAge });
   });
 
   test.each(["name", "type", "breed"])("DEF-05 — %s que não é texto responde 400", async (field) => {
     expect((await expectRejected({ [field]: 123 })).body).toEqual({ message: messages.requiredFields });
+  });
+
+  test.fails("DEF-07 — tipo fora da lista responde 400", async () => {
+    await expectRejected({ type: "Dragão" });
   });
 });
