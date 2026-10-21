@@ -4,9 +4,8 @@ import { redirect } from 'next/navigation'
 import type { ReactNode } from 'react'
 import AppShell from '@/components/AppShell'
 import { backLink, card, eyebrow } from '@/components/ui'
-import { getPet } from '@/database/pets/get-pet'
-import { currentUser } from '@/lib/session'
-import { isUuid } from '@/lib/uuid'
+import { currentUser } from '@/main/current-user'
+import { makeGetPet } from '@/main/factories/pets'
 
 function Detail({ icon, label, value }: { icon: ReactNode, label: string, value: string }) {
   return (
@@ -25,7 +24,7 @@ export default async function PetProfile({ params }: PageProps<'/pets/[petId]'>)
   if (!user) redirect('/login')
 
   const { petId } = await params
-  const pet = isUuid(petId) ? await getPet(petId, user.id) : null
+  const pet = await makeGetPet().execute({ userId: user.id, id: petId })
 
   if (!pet) {
     return (
