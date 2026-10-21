@@ -4,21 +4,21 @@ import { requiredText } from "@/validators/fields";
 import { ValidationError } from "@/validators/validation-error";
 import { ZodValidator } from "@/validators/zod-validator";
 
-describe("requiredText", () => {
+describe("requiredText", { tags: ["RF-04"] }, () => {
   const schema = requiredText("required");
 
-  test("trims filled values", () => {
+  test("remove os espaços das pontas dos valores preenchidos", () => {
     expect(schema.parse(" Rex ")).toBe("Rex");
   });
 
-  test("rejects missing, blank or non-string values", () => {
+  test("recusa valores ausentes, vazios ou que não são texto", () => {
     for (const value of [undefined, "   ", 42]) {
       expect(schema.safeParse(value).error?.issues[0].message).toBe("required");
     }
   });
 });
 
-describe("ZodValidator", () => {
+describe("ZodValidator", { tags: ["RF-04"] }, () => {
   const validator = new ZodValidator(
     z.object({
       name: requiredText("required"),
@@ -26,14 +26,14 @@ describe("ZodValidator", () => {
     }),
   );
 
-  test("returns the parsed data without unknown keys", () => {
+  test("retorna os dados validados sem chaves desconhecidas", () => {
     expect(validator.validate({ name: " Ana ", email: "ana@petcare.com", admin: true })).toEqual({
       name: "Ana",
       email: "ana@petcare.com",
     });
   });
 
-  test("throws a ValidationError with the first issue message", () => {
+  test("lança ValidationError com a mensagem do primeiro problema", () => {
     expect(() => validator.validate({ email: "invalid" })).toThrow(new ValidationError("required"));
     expect(() => validator.validate({ name: "Ana", email: "invalid" })).toThrow(
       new ValidationError("invalid email"),
