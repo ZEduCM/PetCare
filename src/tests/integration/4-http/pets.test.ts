@@ -5,7 +5,14 @@ import { ApiClient } from "@/tests/support/api-client";
 import { signUp } from "@/tests/support/builders";
 import type { Pet } from "@/types";
 
-const validPet = { name: "Rex", type: "Cachorro", breed: "Labrador", age: 3, weight: 12, icon: "🐶" };
+const validPet = {
+  name: "Rex",
+  type: "Cachorro",
+  breed: "Labrador",
+  age: 3,
+  weight: 12,
+  icon: "🐶",
+};
 
 async function countPets() {
   const { rows } = await pool.query("SELECT count(*)::int AS total FROM pets");
@@ -20,12 +27,16 @@ async function signedIn() {
 
 describe("GET /api/pets", { tags: ["RF-02", "RF-09"] }, () => {
   test("PET-01 — listar pets sem estar logado responde 401", async () => {
-    expect(await new ApiClient().get("/api/pets")).toEqual({ status: 401, body: { message: messages.loginRequired } });
+    expect(await new ApiClient().get("/api/pets")).toEqual({
+      status: 401,
+      body: { message: messages.loginRequired },
+    });
   });
 
   test("PET-03 — lista só os pets do usuário logado", async () => {
     const { client } = await signedIn();
     const other = await signedIn();
+
     await client.post("/api/pets", { ...validPet, name: "Thor" });
     await other.client.post("/api/pets", { ...validPet, name: "Bob" });
 
@@ -47,7 +58,10 @@ describe("POST /api/pets", { tags: ["RF-02", "RF-04"] }, () => {
   test("PET-04 — JSON malformado responde 400 e não grava", async () => {
     const { client } = await signedIn();
 
-    expect(await client.post("/api/pets", "{")).toEqual({ status: 400, body: { message: messages.invalidBody } });
+    expect(await client.post("/api/pets", "{")).toEqual({
+      status: 400,
+      body: { message: messages.invalidBody },
+    });
     expect(await countPets()).toBe(0);
   });
 
@@ -59,14 +73,23 @@ describe("POST /api/pets", { tags: ["RF-02", "RF-04"] }, () => {
     ["idade ausente", { age: undefined }],
     ["peso ausente", { weight: undefined }],
     ["idade nula", { age: null }],
-  ])("PET-05 — campo obrigatório inválido (%s) responde 400 e não grava", async (_, change) => {
-    const { client } = await signedIn();
+  ])(
+    "PET-05 — campo obrigatório inválido (%s) responde 400 e não grava",
+    async (_, change) => {
+      const { client } = await signedIn();
 
-    const response = await client.post("/api/pets", { ...validPet, ...change });
+      const response = await client.post("/api/pets", {
+        ...validPet,
+        ...change,
+      });
 
-    expect(response).toEqual({ status: 400, body: { message: messages.requiredFields } });
-    expect(await countPets()).toBe(0);
-  });
+      expect(response).toEqual({
+        status: 400,
+        body: { message: messages.requiredFields },
+      });
+      expect(await countPets()).toBe(0);
+    },
+  );
 
   test("PET-06 — cadastro válido responde 201 com o pet gravado", async () => {
     const { client } = await signedIn();
@@ -80,9 +103,18 @@ describe("POST /api/pets", { tags: ["RF-02", "RF-04"] }, () => {
   test("PET-07 — normaliza os dados antes de gravar", async () => {
     const { client } = await signedIn();
 
-    const response = await client.post<Pet>("/api/pets", { ...validPet, name: " Rex ", breed: " Labrador " });
+    const response = await client.post<Pet>("/api/pets", {
+      ...validPet,
+      name: " Rex ",
+      breed: " Labrador ",
+    });
 
-    expect(response.body).toMatchObject({ name: "Rex", breed: "Labrador", age: "3", weight: "12" });
+    expect(response.body).toMatchObject({
+      name: "Rex",
+      breed: "Labrador",
+      age: "3",
+      weight: "12",
+    });
   });
 
   test("PET-08 — aplica os valores padrão dos campos opcionais", async () => {
@@ -96,48 +128,73 @@ describe("POST /api/pets", { tags: ["RF-02", "RF-04"] }, () => {
       weight: 12,
     });
 
-    expect(response.body).toMatchObject({ icon: "🐾", vaccine: "", description: "" });
+    expect(response.body).toMatchObject({
+      icon: "🐾",
+      vaccine: "",
+      description: "",
+    });
   });
 
   test("idade 100 é aceita (limite superior)", async () => {
     const { client } = await signedIn();
 
-    expect((await client.post("/api/pets", { ...validPet, age: 100 })).status).toBe(201);
+    expect(
+      (await client.post("/api/pets", { ...validPet, age: 100 })).status,
+    ).toBe(201);
   });
 
   test("PET-09 — idade 0 é aceita", async () => {
     const { client } = await signedIn();
 
-    expect((await client.post("/api/pets", { ...validPet, age: 0 })).status).toBe(201);
+    expect(
+      (await client.post("/api/pets", { ...validPet, age: 0 })).status,
+    ).toBe(201);
   });
 
   test("PET-10 — peso 0,1 é aceito", async () => {
     const { client } = await signedIn();
 
-    expect((await client.post("/api/pets", { ...validPet, weight: 0.1 })).status).toBe(201);
+    expect(
+      (await client.post("/api/pets", { ...validPet, weight: 0.1 })).status,
+    ).toBe(201);
   });
 
   test("DEF-06 — corpo null responde 400", async () => {
     const { client } = await signedIn();
 
-    expect(await client.post("/api/pets", "null")).toEqual({ status: 400, body: { message: messages.invalidBody } });
+    expect(await client.post("/api/pets", "null")).toEqual({
+      status: 400,
+      body: { message: messages.invalidBody },
+    });
   });
 
-  test.each(["31/02/2026", "2026-02-31"])("DEF-08 — data de vacina inválida (%s) responde 400", async (vaccine) => {
-    const { client } = await signedIn();
+  test.each(["31/02/2026", "2026-02-31"])(
+    "DEF-08 — data de vacina inválida (%s) responde 400",
+    async (vaccine) => {
+      const { client } = await signedIn();
 
-    const response = await client.post("/api/pets", { ...validPet, vaccine });
+      const response = await client.post("/api/pets", {
+        ...validPet,
+        vaccine,
+      });
 
-    expect(response).toEqual({ status: 400, body: { message: messages.invalidVaccineDate } });
-    expect(await countPets()).toBe(0);
-  });
+      expect(response).toEqual({
+        status: 400,
+        body: { message: messages.invalidVaccineDate },
+      });
+      expect(await countPets()).toBe(0);
+    },
+  );
 });
 
 describe("Defeitos do cadastro de pet", { tags: ["RF-02", "RF-04"] }, () => {
   async function expectRejected(change: Record<string, unknown>) {
     const { client } = await signedIn();
 
-    const response = await client.post("/api/pets", { ...validPet, ...change });
+    const response = await client.post("/api/pets", {
+      ...validPet,
+      ...change,
+    });
 
     expect(response.status).toBe(400);
     expect(await countPets()).toBe(0);
@@ -145,29 +202,67 @@ describe("Defeitos do cadastro de pet", { tags: ["RF-02", "RF-04"] }, () => {
   }
 
   test("DEF-01 — idade negativa responde 400", async () => {
-    expect((await expectRejected({ age: -5 })).body).toEqual({ message: messages.invalidAge });
+    expect((await expectRejected({ age: -5 })).body).toEqual({
+      message: messages.invalidAge,
+    });
   });
 
   test("DEF-02 — idade acima de 100 responde 400", async () => {
-    expect((await expectRejected({ age: 101 })).body).toEqual({ message: messages.invalidAge });
+    expect((await expectRejected({ age: 101 })).body).toEqual({
+      message: messages.invalidAge,
+    });
   });
 
   test.each([-1, 0, 1000.1, "abc"])(
-  "DEF-03 — peso inválido (%s) responde 400",
-  async (weight) => {
-    await expectRejected({ weight });
-  },
-);
+    "DEF-03 — peso inválido (%s) responde 400",
+    async (weight) => {
+      await expectRejected({ weight });
+    },
+  );
 
-  test.each(["abc", "2.5", "2 anos"])("DEF-04 — idade não numérica (%s) responde 400", async (age) => {
-    expect((await expectRejected({ age })).body).toEqual({ message: messages.invalidAge });
-  });
+  test.each(["abc", "2.5", "2 anos"])(
+    "DEF-04 — idade não numérica (%s) responde 400",
+    async (age) => {
+      expect((await expectRejected({ age })).body).toEqual({
+        message: messages.invalidAge,
+      });
+    },
+  );
 
-  test.each(["name", "type", "breed"])("DEF-05 — %s que não é texto responde 400", async (field) => {
-    expect((await expectRejected({ [field]: 123 })).body).toEqual({ message: messages.requiredFields });
-  });
+  test.each(["name", "type", "breed"])(
+    "DEF-05 — %s que não é texto responde 400",
+    async (field) => {
+      expect((await expectRejected({ [field]: 123 })).body).toEqual({
+        message: messages.requiredFields,
+      });
+    },
+  );
 
   test.fails("DEF-07 — tipo fora da lista responde 400", async () => {
     await expectRejected({ type: "Dragão" });
   });
+    test.fails("DEF-07 — tipo fora da lista responde 400", async () => {
+    await expectRejected({ type: "Dragão" });
+  });
+
+  test.each(["name", "breed"])(
+    "DEF-16 — %s com 101 caracteres responde 400",
+    async (field) => {
+      await expectRejected({ [field]: "A".repeat(101) });
+    },
+  );
+
+  test.each(["name", "breed"])(
+    "DEF-16 — %s com 100 caracteres é aceito",
+    async (field) => {
+      const { client } = await signedIn();
+
+      const response = await client.post("/api/pets", {
+        ...validPet,
+        [field]: "A".repeat(100),
+      });
+
+      expect(response.status).toBe(201);
+    },
+  );
 });
