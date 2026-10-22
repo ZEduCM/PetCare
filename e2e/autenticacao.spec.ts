@@ -1,3 +1,4 @@
+
 import { expect, test } from "@playwright/test";
 import { demo, newTutor, signIn } from "./support";
 
@@ -62,7 +63,9 @@ test.describe("Autenticação", () => {
         await page.getByRole("button", { name: "Criar conta" }).click();
 
         await expect(page.getByRole("main").getByRole("alert")).toHaveText(item.message);
-        const login = await page.request.post("/api/auth/login", { data: { email: item.email, password: item.password } });
+        const login = await page.request.post("/api/auth/login", {
+          data: { email: item.email, password: item.password },
+        });
         expect(login.status()).toBe(401);
       });
     }
@@ -89,6 +92,24 @@ test.describe("Autenticação", () => {
       await expect(page.getByRole("main").getByRole("alert")).toContainText("Faça login para continuar.");
       await expect(page.locator('main a[href^="/pets/"]')).toHaveCount(0);
       await expect(page).toHaveURL(/\/dashboard$/);
+    },
+  );
+
+  test(
+    "CT-21 — voltar após logout não deve reabrir o dashboard",
+    { tag: ["@cenario", "@RF-09"] },
+    async ({ page }) => {
+      await signIn(page, demo);
+
+      await page.getByRole("button", { name: "Sair" }).click();
+      await expect(page).toHaveURL(/\/login$/);
+
+      await page.goBack();
+
+      await expect(page).toHaveURL(/\/login$/);
+      await expect(
+        page.getByRole("heading", { name: "Entrar" }),
+      ).toBeVisible();
     },
   );
 });
