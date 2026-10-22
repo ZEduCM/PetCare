@@ -39,8 +39,15 @@ const validator = new ZodValidator(
     id: z.string().default(() => crypto.randomUUID()),
     petId: z.string(),
     petName: z.string(),
-    title: requiredText(messages.requiredFields),
-    category: requiredText(messages.requiredFields),
+    title: requiredText(messages.requiredFields).pipe(
+      z.string().min(3, messages.shortTitle),
+    ),
+    category: requiredText(messages.requiredFields).pipe(
+      z.enum(["Alimentação", "Rotina", "Higiene", "Saúde"], {
+        error: messages.invalidCategory,
+      }),
+    ),
+
     date: requiredText(messages.requiredFields).pipe(
       z.iso.date({ error: messages.invalidDate }),
     ),
