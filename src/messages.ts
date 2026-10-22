@@ -17,4 +17,5 @@ export const messages = {
   userRegistered: "User registered successfully.",
   unexpectedError: "Could not complete the operation.",
   invalidWeight: "Weight must be a number from 0.1 to 1000.",
+  invalidPetNameOrBreed: "Name and breed must have at most 100 characters.",
 } as const;

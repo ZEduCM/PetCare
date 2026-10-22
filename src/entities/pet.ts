@@ -31,9 +31,15 @@ const validator = new ZodValidator(
   z.object({
     id: z.string().default(() => crypto.randomUUID()),
     ownerId: z.string(),
-    name: requiredText(messages.requiredFields),
+    name: requiredText(messages.requiredFields).max(
+      100,
+      messages.invalidPetNameOrBreed,
+    ),
     type: requiredText(messages.requiredFields),
-    breed: requiredText(messages.requiredFields),
+    breed: requiredText(messages.requiredFields).max(
+      100,
+      messages.invalidPetNameOrBreed,
+    ),
     age: requiredText(messages.requiredFields)
       .regex(/^\d+$/, messages.invalidAge)
       .refine((age) => Number(age) <= 100, messages.invalidAge)
