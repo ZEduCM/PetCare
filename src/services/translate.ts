@@ -21,6 +21,7 @@ const portuguese: Record<MessageKey, string> = {
   userRegistered: "Usuário cadastrado com sucesso!",
   unexpectedError: "Não foi possível concluir a operação.",
   shortTitle: "Use pelo menos 3 caracteres.",
+  invalidCategory: "Selecione uma categoria válida.",
 };
 
 const byEnglishMessage = new Map<string, string>(

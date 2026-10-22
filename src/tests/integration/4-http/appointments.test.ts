@@ -357,4 +357,20 @@ describe("Defeitos do cadastro de compromisso", { tags: ["RF-03", "RF-04"] }, ()
 
     expect(response.status).toBe(201);
   });
+  
+  test("DEF-18 — categoria fora da lista responde 400", async () => {
+    const { client, pet } = await signedIn();
+
+    const response = await client.post("/api/appointments", {
+      ...validAppointment(pet.id),
+      category: "Festa",
+    });
+
+    expect(response).toEqual({
+      status: 400,
+      body: { message: messages.invalidCategory },
+    });
+    expect(await countAppointments()).toBe(0);
+  });
+
 });
