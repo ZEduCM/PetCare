@@ -147,12 +147,11 @@ describe("POST /api/appointments", { tags: ["RF-03", "RF-04"] }, () => {
 
   test("APT-07 — sem observação grava texto vazio", async () => {
     const { client, pet } = await signedIn();
-    const { notes: _, ...withoutNotes } = validAppointment(pet.id);
+    const response = await client.post<Appointment>("/api/appointments", {
+      ...validAppointment(pet.id),
+      notes: undefined,
+    });
 
-    const response = await client.post<Appointment>(
-      "/api/appointments",
-      withoutNotes,
-    );
 
     expect(response.status).toBe(201);
     expect(response.body.notes).toBe("");
