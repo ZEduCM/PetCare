@@ -330,3 +330,31 @@ describe("DELETE /api/appointments", { tags: ["RF-05", "RF-09"] }, () => {
     expect(await countAppointments()).toBe(0);
   });
 });
+
+describe("Defeitos do cadastro de compromisso", { tags: ["RF-03", "RF-04"] }, () => {
+  test.each(["a", "ab"])("DEF-17 — título %s responde 400", async (title) => {
+    const { client, pet } = await signedIn();
+
+    const response = await client.post("/api/appointments", {
+      ...validAppointment(pet.id),
+      title,
+    });
+
+    expect(response).toEqual({
+      status: 400,
+      body: { message: messages.shortTitle },
+    });
+    expect(await countAppointments()).toBe(0);
+  });
+
+  test("DEF-17 — título com 3 caracteres é aceito", async () => {
+    const { client, pet } = await signedIn();
+
+    const response = await client.post("/api/appointments", {
+      ...validAppointment(pet.id),
+      title: "abc",
+    });
+
+    expect(response.status).toBe(201);
+  });
+});
