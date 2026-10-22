@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 import { messages } from "@/messages";
 import { requiredText } from "@/validators/fields";
@@ -37,7 +38,14 @@ const validator = new ZodValidator(
       .regex(/^\d+$/, messages.invalidAge)
       .refine((age) => Number(age) <= 100, messages.invalidAge)
       .transform((age) => String(Number(age))),
-    weight: requiredText(messages.requiredFields),
+    weight: z
+      .string()
+      .trim()
+      .min(1, messages.requiredFields)
+      .refine((weight) => {
+        const value = Number(weight);
+        return Number.isFinite(value) && value >= 0.1 && value <= 1000;
+      }, messages.invalidWeight),
     vaccine: z
       .literal("")
       .or(z.iso.date({ error: messages.invalidVaccineDate }))

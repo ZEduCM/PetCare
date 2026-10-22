@@ -16,4 +16,5 @@ export const messages = {
   appointmentNotFound: "Appointment not found.",
   userRegistered: "User registered successfully.",
   unexpectedError: "Could not complete the operation.",
+  invalidWeight: "Weight must be a number from 0.1 to 1000.",
 } as const;
