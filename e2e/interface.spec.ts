@@ -336,10 +336,6 @@ test.describe("Interface, erros e sessão", () => {
             },
         },
         async ({ page }) => {
-            test.fail(
-                true,
-                "DEF-14 — rota desconhecida redireciona para /login",
-            );
 
             await page.goto("/pagina-que-nao-existe");
 
