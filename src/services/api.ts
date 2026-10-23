@@ -26,13 +26,22 @@ async function request<T>(
   url: string,
   options: RequestInit = {},
 ): Promise<T> {
-  const response = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
-    ...options,
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+      },
+      ...options,
+    });
+  } catch {
+    throw new ApiError(
+      "Não foi possível conectar. Verifique sua internet e tente de novo.",
+      0,
+    );
+  }
 
   if (!response.ok) {
     let message = DEFAULT_ERROR;

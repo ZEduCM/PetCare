@@ -247,11 +247,6 @@ test.describe("Interface, erros e sessão", () => {
 
             await dialog.getByLabel("Peso (kg) *").fill("4.5");
 
-            test.fail(
-                true,
-                "OBS-01 — a falha de rede pode exibir 'Failed to fetch'",
-            );
-
             await context.setOffline(true);
 
             try {
