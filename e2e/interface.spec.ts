@@ -300,11 +300,6 @@ test.describe("Interface, erros e sessão", () => {
             },
         },
         async ({ page }) => {
-            test.fail(
-                true,
-                "DEF-15 pertence a outra tarefa do grupo",
-            );
-
             await signInAsNewTutor(page);
 
             await page.goto("/compromissos/novo");
