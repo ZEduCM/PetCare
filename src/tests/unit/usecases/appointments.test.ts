@@ -13,8 +13,8 @@ const USER_ID = "user-1";
 function setup() {
   const pets = new InMemoryPetRepository();
   const appointments = new InMemoryAppointmentRepository(pets);
-  const rex = new Pet({ ownerId: USER_ID, name: "Rex", type: "Cão", breed: "SRD", age: "3", weight: "12" });
-  const strangerPet = new Pet({ ownerId: "user-2", name: "Bob", type: "Cão", breed: "SRD", age: "5", weight: "20" });
+  const rex = new Pet({ ownerId: USER_ID, name: "Rex", type: "Cachorro", breed: "SRD", age: "3", weight: "12" });
+  const strangerPet = new Pet({ ownerId: "user-2", name: "Bob", type: "Cachorro", breed: "SRD", age: "5", weight: "20" });
   pets.pets.push(rex, strangerPet);
 
   return {

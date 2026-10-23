@@ -78,22 +78,15 @@ test.describe("Autenticação", () => {
     }
   });
 
-  test(
-    "CT-07 — cookie de sessão forjado",
-    {
-      tag: ["@cenario", "@RF-09"],
-      annotation: { type: "observação", description: "A tela não redireciona para o login: mostra o erro da API (OBS-03)." },
-    },
-    async ({ page, context, baseURL }) => {
-      await context.addCookies([{ name: "petcare_session", value: "abc", url: baseURL }]);
+  test("CT-07 — cookie de sessão forjado", { tag: ["@cenario", "@RF-09"] }, async ({ page, context, baseURL }) => {
+    await context.addCookies([{ name: "petcare_session", value: "abc", url: baseURL }]);
 
-      await page.goto("/dashboard");
+    await page.goto("/dashboard");
 
-      await expect(page.getByRole("main").getByRole("alert")).toContainText("Faça login para continuar.");
-      await expect(page.locator('main a[href^="/pets/"]')).toHaveCount(0);
-      await expect(page).toHaveURL(/\/dashboard$/);
-    },
-  );
+    await expect(page).toHaveURL(/\/login$/);
+    await expect(page.getByRole("heading", { name: "Bem-vindo ao PetCare" })).toBeVisible();
+    await expect(page.locator('main a[href^="/pets/"]')).toHaveCount(0);
+  });
 
   test(
     "CT-21 — voltar após logout não deve reabrir o dashboard",
@@ -107,9 +100,7 @@ test.describe("Autenticação", () => {
       await page.goBack();
 
       await expect(page).toHaveURL(/\/login$/);
-      await expect(
-        page.getByRole("heading", { name: "Entrar" }),
-      ).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Bem-vindo ao PetCare" })).toBeVisible();
     },
   );
 });

@@ -5,7 +5,7 @@ import { ValidationError } from "@/validators/validation-error";
 
 describe("Pet", { tags: ["RF-02", "RF-04"] }, () => {
   test("aplica os valores padrão e esconde o dono no JSON", () => {
-    const rex = new Pet({ ownerId: "user-1", name: "Rex", type: "Cão", breed: "SRD", age: "3", weight: "12" });
+    const rex = new Pet({ ownerId: "user-1", name: "Rex", type: "Cachorro", breed: "SRD", age: "3", weight: "12" });
 
     expect(rex.vaccine).toBe("");
     expect(rex.icon).toBe("🐾");
@@ -15,11 +15,11 @@ describe("Pet", { tags: ["RF-02", "RF-04"] }, () => {
   });
 
   test.each(["0", "100", " 7 "])("aceita a idade %j", (age) => {
-    expect(new Pet({ ownerId: "user-1", name: "Rex", type: "Cão", breed: "SRD", age, weight: "12" }).age).toBe(age.trim());
+    expect(new Pet({ ownerId: "user-1", name: "Rex", type: "Cachorro", breed: "SRD", age, weight: "12" }).age).toBe(age.trim());
   });
 
   test.each(["-1", "101", "abc", "2.5"])("recusa a idade %j", (age) => {
-    expect(() => new Pet({ ownerId: "user-1", name: "Rex", type: "Cão", breed: "SRD", age, weight: "12" })).toThrow(
+    expect(() => new Pet({ ownerId: "user-1", name: "Rex", type: "Cachorro", breed: "SRD", age, weight: "12" })).toThrow(
       new ValidationError(messages.invalidAge),
     );
   });
@@ -29,7 +29,7 @@ describe("Pet", { tags: ["RF-02", "RF-04"] }, () => {
       new ValidationError(messages.requiredFields),
     );
     expect(() =>
-      new Pet({ ownerId: "user-1", name: "Rex", type: "Cão", breed: "SRD", age: "3", weight: "12", vaccine: "2026-02-30" }),
+      new Pet({ ownerId: "user-1", name: "Rex", type: "Cachorro", breed: "SRD", age: "3", weight: "12", vaccine: "2026-02-30" }),
     ).toThrow(new ValidationError(messages.invalidVaccineDate));
   });
 });
