@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import AppShell from './AppShell'
 import ErrorBanner from './ErrorBanner'
-import Loading from './Loading'
 import Spinner from './Spinner'
 import { backLink, card, eyebrow, fieldError, fieldInput, fieldLabel, primaryButton, secondaryButton } from './ui'
 import { api, errorMessage } from '../services/api'
@@ -117,7 +116,6 @@ export default function AppointmentForm({ id }: { id?: string }) {
         </div>
 
         {loadError && <ErrorBanner message={loadError} onRetry={retry} />}
-        {loading && <Loading label={editing ? 'Carregando compromisso' : 'Carregando pets'} />}
         {apiError && <ErrorBanner message={apiError} />}
 
         <form onSubmit={submit} noValidate>
@@ -130,10 +128,18 @@ export default function AppointmentForm({ id }: { id?: string }) {
 
             <div className="min-w-0">
               <label className={fieldLabel} htmlFor="petId">Pet <span className="text-danger">*</span></label>
-              <select className={fieldInput} id="petId" name="petId" value={form.petId} onChange={change} aria-invalid={Boolean(errors.petId)} aria-describedby={errors.petId ? 'petId-error' : undefined}>
-                <option value="">Selecione</option>
-                {pets.map(pet => <option key={pet.id} value={pet.id}>{pet.icon} {pet.name}</option>)}
-              </select>
+              <div className="relative">
+                <select className={fieldInput} id="petId" name="petId" value={form.petId} onChange={change} disabled={loading} aria-busy={loading} aria-invalid={Boolean(errors.petId)} aria-describedby={errors.petId ? 'petId-error' : undefined}>
+                  <option value="">Selecione</option>
+                  {pets.map(pet => <option key={pet.id} value={pet.id}>{pet.icon} {pet.name}</option>)}
+                </select>
+                {loading && (
+                  <span role="status" className="pointer-events-none absolute inset-y-0 right-8 flex items-center text-primary-dark">
+                    <Spinner />
+                    <span className="sr-only">Carregando pets</span>
+                  </span>
+                )}
+              </div>
               {errors.petId && <small id="petId-error" className={fieldError}>{errors.petId}</small>}
             </div>
 
