@@ -215,4 +215,64 @@ test.describe("Interface, erros e sessão", () => {
             }
         },
     );
+
+    test(
+        "CT-20 — erro de rede apresenta mensagem em português",
+        {
+            tag: ["@cenario", "@RF-06"],
+            annotation: {
+                type: "defeito",
+                description:
+                    "OBS-01 — fetch offline mostra 'Failed to fetch'",
+            },
+        },
+        async ({ page, context }) => {
+            await signInAsNewTutor(page);
+
+            await page.getByRole("button", {
+                name: /Cadastrar pet/,
+            }).click();
+
+            const dialog = page.getByRole("dialog", {
+                name: "Cadastrar novo pet",
+            });
+
+            await dialog.getByLabel("Nome *").fill(
+                "Pet offline CT20",
+            );
+
+            await dialog.getByLabel("Raça *").fill("SRD");
+
+            await dialog.getByLabel("Idade *").fill("2");
+
+            await dialog.getByLabel("Peso (kg) *").fill("4.5");
+
+            test.fail(
+                true,
+                "OBS-01 — a falha de rede pode exibir 'Failed to fetch'",
+            );
+
+            await context.setOffline(true);
+
+            try {
+                await dialog.getByRole("button", {
+                    name: "Salvar pet",
+                }).click();
+
+                const alert = dialog.getByRole("alert");
+
+                await expect(alert).toBeVisible();
+
+                await expect(alert).not.toContainText(
+                    "Failed to fetch",
+                );
+
+                await expect(alert).toContainText(
+                    /internet|conectar|conexão/i,
+                );
+            } finally {
+                await context.setOffline(false);
+            }
+        },
+    );
 });
