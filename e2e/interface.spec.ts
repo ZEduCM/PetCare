@@ -8,6 +8,7 @@ import {
     registerViaApi,
     signIn,
     signInAsNewTutor,
+    signOut,
 } from "./support";
 
 const categories = [
@@ -270,4 +271,21 @@ test.describe("Interface, erros e sessão", () => {
             }
         },
     );
+
+    test("CT-21a — logout e acesso direto ao painel exigem login", {
+        tag: ["@cenario", "@RF-01", "@RF-09"],
+    }, async ({ page }) => {
+        await signInAsNewTutor(page);
+
+        await signOut(page);
+
+        await expect(page).toHaveURL(/\/login$/);
+
+        await page.goto("/dashboard");
+
+        await expect(page).toHaveURL(/\/login$/);
+        await expect(
+            page.getByRole("heading", { name: "Bem-vindo ao PetCare" }),
+        ).toBeVisible();
+    });
 });
