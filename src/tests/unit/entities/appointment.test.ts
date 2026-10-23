@@ -6,7 +6,7 @@ import { ValidationError } from "@/validators/validation-error";
 const rex = new Pet({
   ownerId: "user-1",
   name: "Rex",
-  type: "Cão",
+  type: "Cachorro",
   breed: "SRD",
   age: "3",
   weight: "12",
