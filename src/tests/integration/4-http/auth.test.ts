@@ -276,13 +276,13 @@ describe("POST /api/auth/register", { tags: ["RF-02"] }, () => {
   test("AUT-13 — falha no banco retorna 500 sem expor detalhes internos", async () => {
     const client = new ApiClient();
     const user = newUser();
+    const databaseError = new Error("connect ECONNREFUSED 10.0.0.5:5432");
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
 
     vi.spyOn(
       PostgresUserRepository.prototype,
       "create",
-    ).mockRejectedValueOnce(
-      new Error("connect ECONNREFUSED 10.0.0.5:5432"),
-    );
+    ).mockRejectedValueOnce(databaseError);
 
     const response = await client.post("/api/auth/register", user);
 
@@ -290,12 +290,14 @@ describe("POST /api/auth/register", { tags: ["RF-02"] }, () => {
     expect(response.body).toEqual({
       message: messages.unexpectedError,
     });
+    expect(log).toHaveBeenCalledExactlyOnceWith(databaseError);
 
     const responseText = JSON.stringify(response.body);
 
     expect(responseText).not.toContain("ECONNREFUSED");
     expect(responseText).not.toContain("10.0.0.5");
     expect(responseText).not.toContain("5432");
+    log.mockRestore();
   });
 
   test("DEF-13 — JSON malformado no cadastro responde 400", async () => {
