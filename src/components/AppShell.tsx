@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { CalendarPlus, Home, LogOut, Menu, PawPrint, X } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { api } from '@/services/api'
+import { resetStore } from '@/services/store'
 
 const navItem = 'flex items-center gap-[7px] rounded-[10px] p-3 font-bold md:py-[9px]'
 
@@ -41,6 +42,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
       await api.logout()
     } finally {
       localStorage.removeItem('petcare_user')
+      resetStore()
       window.location.replace('/login')
     }
   }

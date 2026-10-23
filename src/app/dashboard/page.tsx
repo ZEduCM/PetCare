@@ -1,7 +1,7 @@
 
 'use client'
 
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import AppShell from '@/components/AppShell'
 import AppointmentCard, { formatDate } from '@/components/AppointmentCard'
@@ -12,8 +12,9 @@ import ErrorBanner from '@/components/ErrorBanner'
 import Loading from '@/components/Loading'
 import Spinner from '@/components/Spinner'
 import { errorBanner, secondaryButton } from '@/components/ui'
-import { api, errorMessage } from '@/services/api'
-import type { Appointment, Pet } from '@/types'
+import { errorMessage } from '@/services/api'
+import { createPet, deleteAppointment, refresh, updateAppointment, usePetCareData } from '@/services/store'
+import type { Appointment } from '@/types'
 
 const placeholder =
   'rounded-[14px] border border-dashed border-line bg-white p-[35px] text-center text-muted'
@@ -32,10 +33,9 @@ const emptyPetForm = {
 export default function Dashboard() {
   const router = useRouter()
 
-  const [pets, setPets] = useState<Pet[]>([])
-  const [appointments, setAppointments] = useState<Appointment[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { pets, appointments, loaded, fetching, error: loadError } = usePetCareData()
+  const loading = fetching && !loaded
+  const [actionError, setActionError] = useState('')
   const [selectedAppointment, setSelectedAppointment] =
     useState<Appointment | null>(null)
 
@@ -49,27 +49,6 @@ export default function Dashboard() {
   const [appointmentToDelete, setAppointmentToDelete] =
     useState<Appointment | null>(null)
   const [deleting, setDeleting] = useState(false)
-  function loadDashboard() {
-    return Promise.all([api.getPets(), api.getAppointments()])
-      .then(([petsData, appointmentsData]) => {
-        setPets(petsData)
-        setAppointments(appointmentsData)
-        setError('')
-      })
-      .catch(err => setError(errorMessage(err)))
-      .finally(() => setLoading(false))
-  }
-
-  function retry() {
-    setLoading(true)
-    setError('')
-    loadDashboard()
-  }
-
-  useEffect(() => {
-    loadDashboard()
-  }, [])
-
   const filtered = useMemo(() => {
     const result = filter === 'Todos'
       ? appointments
@@ -121,18 +100,12 @@ export default function Dashboard() {
     setPetError('')
 
     try {
-      const newPet = await api.createPet({
+      await createPet({
         ...petForm,
         name: petForm.name.trim(),
         breed: petForm.breed.trim(),
         description: petForm.description.trim(),
       })
-
-      setPets(current =>
-        [...current, newPet].sort((a, b) =>
-          a.name.localeCompare(b.name),
-        ),
-      )
 
       setPetModalOpen(false)
       setPetForm({ ...emptyPetForm })
@@ -153,13 +126,10 @@ export default function Dashboard() {
 
     setDeleting(true)
     try {
-      await api.deleteAppointment(appointmentToDelete.id)
-      setAppointments(current =>
-        current.filter(item => item.id !== appointmentToDelete.id),
-      )
+      await deleteAppointment(appointmentToDelete.id)
       setAppointmentToDelete(null)
     } catch (err) {
-      setError(errorMessage(err))
+      setActionError(errorMessage(err))
       setAppointmentToDelete(null)
     } finally {
       setDeleting(false)
@@ -168,17 +138,9 @@ export default function Dashboard() {
 
   async function toggleComplete(item: Appointment) {
     try {
-      const updated = await api.updateAppointment(item.id, {
-        completed: !item.completed,
-      })
-
-      setAppointments(current =>
-        current.map(currentItem =>
-          currentItem.id === item.id ? updated : currentItem,
-        ),
-      )
+      await updateAppointment(item.id, { completed: !item.completed })
     } catch (err) {
-      setError(errorMessage(err))
+      setActionError(errorMessage(err))
     }
   }
 
@@ -194,7 +156,8 @@ export default function Dashboard() {
         </p>
       </section>
 
-      {error && <ErrorBanner message={error} onRetry={retry} />}
+      {loadError && <ErrorBanner message={loadError} onRetry={refresh} />}
+      {actionError && <ErrorBanner message={actionError} />}
 
       {/* Cartões de resumo */}
       <section
@@ -242,7 +205,7 @@ export default function Dashboard() {
           </div>
         ) : pets.length === 0 ? (
           <div className={placeholder}>
-            {error ? 'Não foi possível carregar os pets.' : 'Você ainda não cadastrou nenhum pet.'}
+            {loadError ? 'Não foi possível carregar os pets.' : 'Você ainda não cadastrou nenhum pet.'}
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-[15px] md:grid-cols-3">
@@ -295,7 +258,7 @@ export default function Dashboard() {
           </div>
         ) : filtered.length === 0 ? (
           <div className={placeholder}>
-            {error ? 'Não foi possível carregar os compromissos.' : 'Nenhum compromisso encontrado para este filtro.'}
+            {loadError ? 'Não foi possível carregar os compromissos.' : 'Nenhum compromisso encontrado para este filtro.'}
           </div>
         ) : (
           <div className="grid gap-2.5">

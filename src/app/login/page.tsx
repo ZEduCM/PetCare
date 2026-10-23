@@ -13,6 +13,7 @@ import {
 } from "@/components/ui";
 import Spinner from "@/components/Spinner";
 import { api, errorMessage } from "@/services/api";
+import { resetStore } from "@/services/store";
 
 export default function Login() {
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function Login() {
       const user = await api.login(email.trim(), password);
 
       localStorage.setItem("petcare_user", user.name);
+      resetStore();
       router.push("/dashboard");
     } catch (err) {
       setError(errorMessage(err));
