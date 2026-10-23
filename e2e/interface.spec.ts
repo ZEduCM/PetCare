@@ -4,6 +4,9 @@ import {
     createPetViaApi,
     mel,
     melVaccine,
+    newTutor,
+    registerViaApi,
+    signIn,
     signInAsNewTutor,
 } from "./support";
 
@@ -14,6 +17,20 @@ const categories = [
     "Higiene",
     "Saúde",
 ];
+
+async function expectNoHorizontalOverflow(
+    page: import("@playwright/test").Page,
+) {
+    const dimensions = await page.evaluate(() => ({
+        viewport: document.documentElement.clientWidth,
+        content: document.documentElement.scrollWidth,
+    }));
+
+    expect(
+        dimensions.content,
+        `Rolagem horizontal: ${JSON.stringify(dimensions)}`,
+    ).toBeLessThanOrEqual(dimensions.viewport);
+}
 
 test.describe("Interface, erros e sessão", () => {
     test(
@@ -130,6 +147,72 @@ test.describe("Interface, erros e sessão", () => {
 
             await expect(dialog).toBeHidden();
             await expect(opener).toBeFocused();
+        },
+    );
+
+    test(
+        "CT-19 — responsividade em login, painel, modal e compromisso",
+        { tag: ["@cenario", "@RF-08"] },
+        async ({ page }) => {
+            for (const width of [360, 768, 1280]) {
+                await test.step(`Viewport ${width}px`, async () => {
+                    await page.setViewportSize({
+                        width,
+                        height: 900,
+                    });
+
+                    const tutor = newTutor(
+                        `Responsividade CT19 ${width}`,
+                    );
+
+                    await registerViaApi(page.request, tutor);
+
+                    await page.goto("/login");
+                    await expectNoHorizontalOverflow(page);
+
+                    await signIn(page, tutor);
+                    await expectNoHorizontalOverflow(page);
+
+                    const opener = page.getByRole("button", {
+                        name: /Cadastrar pet/,
+                    });
+
+                    await expect(opener).toBeVisible();
+                    await opener.click();
+
+                    const dialog = page.getByRole("dialog", {
+                        name: "Cadastrar novo pet",
+                    });
+
+                    await expect(dialog).toBeVisible();
+
+                    await expect(
+                        dialog.getByRole("button", {
+                            name: "Salvar pet",
+                        }),
+                    ).toBeVisible();
+
+                    await expectNoHorizontalOverflow(page);
+
+                    await page.keyboard.press("Escape");
+
+                    await page.goto("/compromissos/novo");
+
+                    await expect(
+                        page.getByRole("heading", {
+                            name: "Novo compromisso",
+                        }),
+                    ).toBeVisible();
+
+                    await expect(
+                        page.getByRole("button", {
+                            name: "Salvar compromisso",
+                        }),
+                    ).toBeVisible();
+
+                    await expectNoHorizontalOverflow(page);
+                });
+            }
         },
     );
 });
