@@ -288,4 +288,40 @@ test.describe("Interface, erros e sessão", () => {
             page.getByRole("heading", { name: "Bem-vindo ao PetCare" }),
         ).toBeVisible();
     });
+
+    test(
+        "CT-21b — botão Voltar após logout leva ao login",
+        {
+            tag: ["@cenario", "@RF-01", "@RF-09"],
+            annotation: {
+                type: "defeito",
+                description:
+                    "DEF-15 — o botão Voltar pode reapresentar o dashboard em cache",
+            },
+        },
+        async ({ page }) => {
+            test.fail(
+                true,
+                "DEF-15 pertence a outra tarefa do grupo",
+            );
+
+            await signInAsNewTutor(page);
+
+            await page.goto("/compromissos/novo");
+
+            await signOut(page);
+
+            await expect(page).toHaveURL(/\/login$/);
+
+            await page.goBack();
+
+            await expect(page).toHaveURL(/\/login$/);
+
+            await expect(
+                page.getByRole("heading", {
+                    name: "Bem-vindo ao PetCare",
+                }),
+            ).toBeVisible();
+        },
+    );
 });
