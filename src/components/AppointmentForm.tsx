@@ -5,9 +5,12 @@ import { useEffect, useState, type ChangeEvent, type SubmitEvent } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import AppShell from './AppShell'
-import { backLink, card, errorBanner, eyebrow, fieldError, fieldInput, fieldLabel, primaryButton, secondaryButton } from './ui'
+import ErrorBanner from './ErrorBanner'
+import Loading from './Loading'
+import Spinner from './Spinner'
+import { backLink, card, eyebrow, fieldError, fieldInput, fieldLabel, primaryButton, secondaryButton } from './ui'
 import { api, errorMessage } from '../services/api'
-import type { AppointmentInput, Pet } from '@/types'
+import type { Appointment, AppointmentInput, Pet } from '@/types'
 
 type FormErrors = Partial<Record<keyof AppointmentInput, string>>
 
@@ -20,6 +23,10 @@ const initial: AppointmentInput = {
   notes: ''
 }
 
+function toInput(item: Appointment): AppointmentInput {
+  return { title: item.title, petId: item.petId, category: item.category, date: item.date, time: item.time, notes: item.notes, completed: item.completed }
+}
+
 export default function AppointmentForm({ id }: { id?: string }) {
   const router = useRouter()
   const editing = Boolean(id)
@@ -28,22 +35,38 @@ export default function AppointmentForm({ id }: { id?: string }) {
   const [errors, setErrors] = useState<FormErrors>({})
   const [apiError, setApiError] = useState('')
   const [saving, setSaving] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState('')
+  const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
-    api.getPets()
-      .then(setPets)
-      .catch(err => setApiError(errorMessage(err)))
-  }, [])
+    let active = true
+    const appointments = id ? api.getAppointments() : Promise.resolve<Appointment[]>([])
 
-  useEffect(() => {
-    if (!id) return
-    api.getAppointments()
-      .then(data => {
-        const item = data.find(current => String(current.id) === String(id))
-        if (item) setForm({ title: item.title || '', petId: item.petId, category: item.category || '', date: item.date || '', time: item.time || '', notes: item.notes || '', completed: item.completed })
+    Promise.all([api.getPets(), appointments])
+      .then(([petsData, appointmentsData]) => {
+        if (!active) return
+        setPets(petsData)
+        const item = appointmentsData.find(current => current.id === id)
+        if (item) setForm(toInput(item))
       })
-      .catch(err => setApiError(errorMessage(err)))
-  }, [id])
+      .catch(err => {
+        if (active) setLoadError(errorMessage(err))
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+
+    return () => {
+      active = false
+    }
+  }, [id, attempt])
+
+  function retry() {
+    setLoading(true)
+    setLoadError('')
+    setAttempt(current => current + 1)
+  }
 
   function change(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value } = event.target
@@ -93,7 +116,9 @@ export default function AppointmentForm({ id }: { id?: string }) {
           <p className="text-muted">Preencha os dados para organizar a rotina do seu pet.</p>
         </div>
 
-        {apiError && <div className={errorBanner} role="alert">{apiError}</div>}
+        {loadError && <ErrorBanner message={loadError} onRetry={retry} />}
+        {loading && <Loading label={editing ? 'Carregando compromisso' : 'Carregando pets'} />}
+        {apiError && <ErrorBanner message={apiError} />}
 
         <form onSubmit={submit} noValidate>
           <div className="grid grid-cols-1 gap-[18px] md:grid-cols-2">
@@ -145,8 +170,8 @@ export default function AppointmentForm({ id }: { id?: string }) {
           <p className="my-[17px] text-[.85rem] text-muted">* Campos obrigatórios</p>
           <div className="flex flex-col-reverse gap-[9px] border-t border-line pt-5 md:flex-row md:justify-end">
             <Link className={`${secondaryButton} w-full md:w-auto`} href="/dashboard">Cancelar</Link>
-            <button className={`${primaryButton} w-full md:w-auto`} type="submit" disabled={saving}>
-              <Save size={18} /> {saving ? 'Salvando...' : editing ? 'Salvar alterações' : 'Salvar compromisso'}
+            <button className={`${primaryButton} w-full md:w-auto`} type="submit" disabled={saving || loading} aria-busy={saving}>
+              {saving ? <Spinner /> : <Save size={18} />} {editing ? 'Salvar alterações' : 'Salvar compromisso'}
             </button>
           </div>
         </form>

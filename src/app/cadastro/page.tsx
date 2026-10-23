@@ -10,6 +10,7 @@ import {
   fieldLabel,
   primaryButton,
 } from "@/components/ui";
+import Spinner from "@/components/Spinner";
 import { api, errorMessage } from "@/services/api";
 
 export default function Cadastro() {
@@ -172,8 +173,10 @@ export default function Cadastro() {
             className={`${primaryButton} mt-2.5 w-full`}
             type="submit"
             disabled={loading}
+            aria-busy={loading}
           >
-            {loading ? "Cadastrando..." : "Criar conta"}
+            {loading && <Spinner />}
+            Criar conta
           </button>
         </form>
 

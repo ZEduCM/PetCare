@@ -1,7 +1,6 @@
 
 'use client'
 
-import { RefreshCw } from 'lucide-react'
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import AppShell from '@/components/AppShell'
@@ -9,6 +8,9 @@ import AppointmentCard, { formatDate } from '@/components/AppointmentCard'
 import PetCard from '@/components/PetCard'
 import SummaryCard from '@/components/SummaryCard'
 import Modal from '@/components/Modal'
+import ErrorBanner from '@/components/ErrorBanner'
+import Loading from '@/components/Loading'
+import Spinner from '@/components/Spinner'
 import { errorBanner, secondaryButton } from '@/components/ui'
 import { api, errorMessage } from '@/services/api'
 import type { Appointment, Pet } from '@/types'
@@ -192,6 +194,8 @@ export default function Dashboard() {
         </p>
       </section>
 
+      {error && <ErrorBanner message={error} onRetry={retry} />}
+
       {/* Cartões de resumo */}
       <section
         className={`mb-[38px] mt-[38px] grid grid-cols-1 gap-[15px] ${summaryItems.length > 4 ? 'md:grid-cols-3 lg:grid-cols-5' : 'md:grid-cols-4'}`}
@@ -232,9 +236,13 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {pets.length === 0 ? (
+        {loading ? (
           <div className={placeholder}>
-            Você ainda não cadastrou nenhum pet.
+            <Loading label="Carregando pets" />
+          </div>
+        ) : pets.length === 0 ? (
+          <div className={placeholder}>
+            {error ? 'Não foi possível carregar os pets.' : 'Você ainda não cadastrou nenhum pet.'}
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-[15px] md:grid-cols-3">
@@ -244,19 +252,6 @@ export default function Dashboard() {
           </div>
         )}
       </section>
-
-      {error && (
-        <div className={`${errorBanner} mb-5`} role="alert">
-          <span>{error}</span>
-          <button
-            className="inline-flex items-center gap-1.5 font-extrabold"
-            onClick={retry}
-          >
-            <RefreshCw size={16} />
-            Tentar novamente
-          </button>
-        </div>
-      )}
 
       {/* Próximos compromissos */}
       <section className="mt-[38px]">
@@ -296,11 +291,11 @@ export default function Dashboard() {
 
         {loading ? (
           <div className={placeholder}>
-            Carregando compromissos...
+            <Loading label="Carregando compromissos" />
           </div>
         ) : filtered.length === 0 ? (
           <div className={placeholder}>
-            Nenhum compromisso encontrado para este filtro.
+            {error ? 'Não foi possível carregar os compromissos.' : 'Nenhum compromisso encontrado para este filtro.'}
           </div>
         ) : (
           <div className="grid gap-2.5">
@@ -450,9 +445,11 @@ export default function Dashboard() {
           <button
             type="submit"
             disabled={petSaving}
-            className="rounded-xl bg-primary px-5 py-3 font-bold text-white disabled:opacity-60"
+            aria-busy={petSaving}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-bold text-white disabled:opacity-60"
           >
-            {petSaving ? 'Salvando...' : 'Salvar pet'}
+            {petSaving && <Spinner />}
+            Salvar pet
           </button>
         </form>
       </Modal>
@@ -486,11 +483,13 @@ export default function Dashboard() {
 
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-[11px] bg-danger px-[17px] py-[11px] font-extrabold text-white transition hover:opacity-90 disabled:cursor-wait disabled:opacity-65"
+            className="inline-flex items-center justify-center gap-2 rounded-[11px] bg-danger px-[17px] py-[11px] font-extrabold text-white transition hover:opacity-90 disabled:cursor-wait disabled:opacity-65"
             onClick={confirmDelete}
             disabled={deleting}
+            aria-busy={deleting}
           >
-            {deleting ? 'Excluindo...' : 'Excluir'}
+            {deleting && <Spinner />}
+            Excluir
           </button>
         </div>
       </Modal>

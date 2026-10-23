@@ -11,6 +11,7 @@ import {
   fieldLabel,
   primaryButton,
 } from "@/components/ui";
+import Spinner from "@/components/Spinner";
 import { api, errorMessage } from "@/services/api";
 
 export default function Login() {
@@ -121,8 +122,10 @@ export default function Login() {
             className={`${primaryButton} mt-2.5 w-full`}
             type="submit"
             disabled={loading}
+            aria-busy={loading}
           >
-            {loading ? "Entrando..." : "Entrar"}
+            {loading && <Spinner />}
+            Entrar
           </button>
         </form>
 
