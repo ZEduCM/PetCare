@@ -324,4 +324,36 @@ test.describe("Interface, erros e sessão", () => {
             ).toBeVisible();
         },
     );
+
+    test(
+        "CT-22 — rota inexistente mostra página 404",
+        {
+            tag: ["@cenario", "@RF-09"],
+            annotation: {
+                type: "defeito",
+                description:
+                    "DEF-14 — rota desconhecida redireciona para /login",
+            },
+        },
+        async ({ page }) => {
+            test.fail(
+                true,
+                "DEF-14 — rota desconhecida redireciona para /login",
+            );
+
+            await page.goto("/pagina-que-nao-existe");
+
+            await expect(
+                page.getByRole("heading", {
+                    name: /página não encontrada|não encontrado/i,
+                }),
+            ).toBeVisible();
+
+            await expect(page).not.toHaveURL(/\/login$/);
+
+            await expect(
+                page.getByText(/internal server error|stack trace/i),
+            ).toHaveCount(0);
+        },
+    );
 });
