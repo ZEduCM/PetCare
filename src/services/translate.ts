@@ -1,3 +1,4 @@
+
 import { messages } from "@/messages";
 
 type MessageKey = keyof typeof messages;
@@ -24,10 +25,14 @@ const portuguese: Record<MessageKey, string> = {
   invalidCategory: "Selecione uma categoria válida.",
   invalidWeight: "O peso deve ser um número de 0,1 a 1000.",
   invalidPetNameOrBreed: "Nome e raça devem ter no máximo 100 caracteres.",
+  invalidPetType: "Selecione um tipo de pet válido.",
 };
 
 const byEnglishMessage = new Map<string, string>(
-  (Object.keys(messages) as MessageKey[]).map((key) => [messages[key], portuguese[key]]),
+  (Object.keys(messages) as MessageKey[]).map((key) => [
+    messages[key],
+    portuguese[key],
+  ]),
 );
 
 export function translate(message: string) {

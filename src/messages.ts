@@ -1,3 +1,4 @@
+
 export const messages = {
   requiredFields: "Fill in all required fields.",
   invalidEmail: "Enter a valid email address.",
@@ -20,4 +21,5 @@ export const messages = {
   invalidPetNameOrBreed: "Name and breed must have at most 100 characters.",
   shortTitle: "Title must be at least 3 characters.",
   invalidCategory: "Choose a valid category.",
+  invalidPetType: "Choose a valid pet type.",
 } as const;

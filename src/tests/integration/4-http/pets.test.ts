@@ -1,3 +1,4 @@
+
 import { describe, expect, test } from "vitest";
 import { pool } from "@/database/db";
 import { messages } from "@/messages";
@@ -238,11 +239,10 @@ describe("Defeitos do cadastro de pet", { tags: ["RF-02", "RF-04"] }, () => {
     },
   );
 
-  test.fails("DEF-07 — tipo fora da lista responde 400", async () => {
-    await expectRejected({ type: "Dragão" });
-  });
-    test.fails("DEF-07 — tipo fora da lista responde 400", async () => {
-    await expectRejected({ type: "Dragão" });
+  test("DEF-07 — tipo fora da lista responde 400", async () => {
+    const response = await expectRejected({ type: "Dragão" });
+
+    expect(response.status).toBe(400);
   });
 
   test.each(["name", "breed"])(

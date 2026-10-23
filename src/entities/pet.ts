@@ -35,7 +35,11 @@ const validator = new ZodValidator(
       100,
       messages.invalidPetNameOrBreed,
     ),
-    type: requiredText(messages.requiredFields),
+    type: requiredText(messages.requiredFields).pipe(
+      z.enum(["Cachorro", "Gato", "Ave", "Outro"], {
+        error: messages.invalidPetType,
+      }),
+    ),
     breed: requiredText(messages.requiredFields).max(
       100,
       messages.invalidPetNameOrBreed,
