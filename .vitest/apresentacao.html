@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roteiro de Apresentação TDD PetCare</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --border: #d9dde3;
+  --text: #1b1f24;
+  --muted: #5c6672;
+  --passed: #1f883d;
+  --failed: #cf222e;
+  --skipped: #9a6700;
+  --chip-saturation: 70%;
+  --chip-lightness: 32%;
+  --chip-bg-lightness: 92%;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1117;
+    --surface: #161a22;
+    --border: #2a303a;
+    --text: #e6e8eb;
+    --muted: #8b949e;
+    --passed: #3fb950;
+    --failed: #f85149;
+    --skipped: #d29922;
+    --chip-lightness: 80%;
+    --chip-bg-lightness: 16%;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 17px; margin: 24px 0 8px; }
+.meta { margin: 0 0 12px; color: var(--muted); }
+.meta code { font-size: 13px; }
+.totals { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 24px; font-weight: 600; }
+.total.passed { color: var(--passed); }
+.total.failed { color: var(--failed); }
+.total.skipped { color: var(--skipped); }
+.card { border: 1px solid var(--border); border-radius: 8px; background: var(--surface); margin-bottom: 12px; overflow: hidden; }
+.card ul { list-style: none; margin: 0; padding: 0; }
+.test { padding: 10px 14px; border-top: 1px solid var(--border); }
+.test:first-child { border-top: 0; }
+.test-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.status { font-weight: 700; width: 1.2em; }
+.passed > .test-line .status { color: var(--passed); }
+.failed > .test-line .status { color: var(--failed); }
+.skipped > .test-line .status { color: var(--skipped); }
+.failed > .test-line .title { color: var(--failed); }
+.title { font-weight: 600; }
+.duration { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+.location { color: var(--muted); font-size: 12px; padding-left: calc(1.2em + 8px); }
+.chip { display: inline-block; padding: 0 8px; border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 20px; color: hsl(var(--hue) var(--chip-saturation) var(--chip-lightness)); background: hsl(var(--hue) var(--chip-saturation) var(--chip-bg-lightness)); border: 1px solid hsl(var(--hue) var(--chip-saturation) var(--chip-lightness) / .45); }
+.chip.neutral { color: var(--muted); background: transparent; border-color: var(--border); }
+[hidden] { display: none !important; }
+
+h2 .count { color: var(--muted); font-weight: 400; }
+.case-id { font-weight: 700; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+.verdict { font-size: 12px; font-weight: 600; min-width: 4.5em; }
+.passed > .test-line .verdict { color: var(--passed); }
+.failed > .test-line .verdict { color: var(--failed); }
+.skipped > .test-line .verdict, .missing > .test-line .verdict, .missing > .test-line .status { color: var(--skipped); }
+.matches { list-style: none; margin: 4px 0 0; padding: 0 0 0 calc(1.2em + 8px); }
+.match { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; font-size: 13px; color: var(--muted); }
+.match .status { width: auto; }
+.match.passed .status { color: var(--passed); }
+.match.failed .status { color: var(--failed); }
+.match .location { padding-left: 0; }
+.location.missing { color: var(--skipped); }
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Roteiro de Apresentação TDD PetCare</h1>
+<p class="meta">Gerado em 23/10/2026, 14:47. Inclui os cenários do Playwright executados em 23/10/2026, 14:31. Desempenho medido em 23/10/2026, 10:41.</p>
+<p class="totals"><span class="total passed">23 passaram</span>
+<span class="total failed">0 falharam</span>
+
+<span class="total">23 casos</span></p>
+</header>
+<section>
+<h2>Unitários <span class="count">(10)</span></h2>
+
+<div class="card"><ul><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">LIB-04</span>
+<span class="title">A senha correta é verificada pelo hash scrypt</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:64" data-filter="RF-01">RF-01</span>
+<span class="chip neutral">Júlia</span>
+<span class="duration">59ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>ScryptPasswordHasher › LIB-04 — a senha correta é verificada</span><span class="location">src/tests/unit/lib/lib.test.ts:22</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">Password</span>
+<span class="title">Exige pelo menos 8 caracteres</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:64" data-filter="RF-01">RF-01</span><span class="chip requirement" style="--hue:117" data-filter="RF-04">RF-04</span>
+<span class="chip neutral">Júlia</span>
+<span class="duration">3ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>Password › exige pelo menos 8 caracteres</span><span class="location">src/tests/unit/entities/password.test.ts:7</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">Appointment</span>
+<span class="title">Recusa datas e horários inválidos</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:339" data-filter="RF-03">RF-03</span><span class="chip requirement" style="--hue:117" data-filter="RF-04">RF-04</span>
+<span class="chip neutral">Tassiana</span>
+<span class="duration">0ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>Appointment › recusa datas e horários inválidos</span><span class="location">src/tests/unit/entities/appointment.test.ts:47</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">CreateAppointment</span>
+<span class="title">Falha quando o pet é de outro usuário</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:339" data-filter="RF-03">RF-03</span>
+<span class="chip neutral">Tassiana</span>
+<span class="duration">1ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>CreateAppointment › falha quando o pet é de outro usuário</span><span class="location">src/tests/unit/usecases/appointments.test.ts:43</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">Pet</span>
+<span class="title">Recusa as idades -1, 101, abc e 2.5</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:202" data-filter="RF-02">RF-02</span><span class="chip requirement" style="--hue:117" data-filter="RF-04">RF-04</span>
+<span class="chip neutral">Jayne</span>
+<span class="duration">5ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>Pet › recusa a idade &quot;-1&quot;</span><span class="location">src/tests/unit/entities/pet.test.ts:21</span></li><li class="match passed"><span class="status">✓</span><span>Pet › recusa a idade &quot;101&quot;</span><span class="location">src/tests/unit/entities/pet.test.ts:21</span></li><li class="match passed"><span class="status">✓</span><span>Pet › recusa a idade &quot;abc&quot;</span><span class="location">src/tests/unit/entities/pet.test.ts:21</span></li><li class="match passed"><span class="status">✓</span><span>Pet › recusa a idade &quot;2.5&quot;</span><span class="location">src/tests/unit/entities/pet.test.ts:21</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">CreatePet</span>
+<span class="title">Não grava nada quando os dados são inválidos</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:202" data-filter="RF-02">RF-02</span>
+<span class="chip neutral">Jayne</span>
+<span class="duration">2ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>CreatePet › não grava nada quando os dados são inválidos</span><span class="location">src/tests/unit/usecases/pets.test.ts:33</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">translate</span>
+<span class="title">Traduz todas as mensagens da API para português</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:117" data-filter="RF-04">RF-04</span><span class="chip requirement" style="--hue:32" data-filter="RF-06">RF-06</span>
+<span class="chip neutral">Camila</span>
+<span class="duration">6ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>translate › traduz para português todas as mensagens do catálogo da API</span><span class="location">src/tests/unit/services/translate.test.ts:6</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">errorResponse</span>
+<span class="title">Esconde erros inesperados atrás de um 500</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:32" data-filter="RF-06">RF-06</span>
+<span class="chip neutral">Camila</span>
+<span class="duration">1ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>errorResponse › esconde erros inesperados</span><span class="location">src/tests/unit/controllers/http.test.ts:44</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">PRX-01</span>
+<span class="title">Página protegida sem cookie redireciona para /login</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:84" data-filter="RF-09">RF-09</span>
+<span class="chip neutral">Eduardo</span>
+<span class="duration">6ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>proxy › PRX-01 — página protegida sem cookie (/dashboard) redireciona (307) para /login</span><span class="location">src/tests/unit/proxy.test.ts:20</span></li><li class="match passed"><span class="status">✓</span><span>proxy › PRX-01 — página protegida sem cookie (/pets/abc) redireciona (307) para /login</span><span class="location">src/tests/unit/proxy.test.ts:20</span></li><li class="match passed"><span class="status">✓</span><span>proxy › PRX-01 — página protegida sem cookie (/compromissos/novo) redireciona (307) para /login</span><span class="location">src/tests/unit/proxy.test.ts:20</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">ZodValidator</span>
+<span class="title">Lança ValidationError com a mensagem do primeiro problema</span>
+<span class="chip label" style="--hue:260" data-filter="unit">unit</span>
+<span class="chip requirement" style="--hue:117" data-filter="RF-04">RF-04</span>
+<span class="chip neutral">Eduardo</span>
+<span class="duration">1ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>ZodValidator › lança ValidationError com a mensagem do primeiro problema</span><span class="location">src/tests/unit/validators/validators.test.ts:36</span></li></ul>
+</li></ul></div>
+</section>
+<section>
+<h2>Integração bottom-up <span class="count">(2)</span></h2>
+<p class="meta">Cada nível usa os módulos reais do nível de baixo, sem stubs; o próprio teste faz o papel de driver.</p>
+<div class="card"><ul><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">Nível 2</span>
+<span class="title">RegisterUser com repositório Postgres e hash scrypt grava o usuário normalizado</span>
+<span class="chip label" style="--hue:125" data-filter="integration">integration</span>
+<span class="chip requirement" style="--hue:64" data-filter="RF-01">RF-01</span>
+<span class="chip neutral">Eduardo</span>
+<span class="duration">61ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>RegisterUser + PostgresUserRepository + ScryptPasswordHasher › grava o usuário normalizado com hash scrypt</span><span class="location">src/tests/integration/2-usecases/auth-usecases.test.ts:25</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">Nível 4</span>
+<span class="title">AUT-14: logout remove a sessão e impede novo acesso pela API</span>
+<span class="chip label" style="--hue:125" data-filter="integration">integration</span>
+<span class="chip requirement" style="--hue:117" data-filter="RF-04">RF-04</span>
+<span class="chip neutral">Júlia</span>
+<span class="duration">60ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>POST /api/auth/logout › AUT-14 — logout remove a sessão e impede novo acesso autenticado</span><span class="location">src/tests/integration/4-http/auth.test.ts:322</span></li></ul>
+</li></ul></div>
+</section>
+<section>
+<h2>Ponta a ponta <span class="count">(1)</span></h2>
+
+<div class="card"><ul><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">CT-11</span>
+<span class="title">Cadastrar um pet, recarregar, sair e entrar de novo: o pet continua na lista</span>
+<span class="chip label" style="--hue:222" data-filter="chromium">chromium</span><span class="chip label" style="--hue:57" data-filter="cenario">cenario</span>
+<span class="chip requirement" style="--hue:202" data-filter="RF-02">RF-02</span>
+<span class="chip neutral">Jayne</span>
+<span class="duration">830ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>Pets › CT-11 — persistência dos dados</span><span class="location">e2e/pets.spec.ts:99</span></li></ul>
+</li></ul></div>
+</section>
+<section>
+<h2>Baseados em requisitos <span class="count">(3)</span></h2>
+
+<div class="card"><ul><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">AUT-09</span>
+<span class="title">Senha com 7 caracteres responde 400</span>
+<span class="chip label" style="--hue:125" data-filter="integration">integration</span>
+<span class="chip requirement" style="--hue:202" data-filter="RF-02">RF-02</span>
+<span class="chip neutral">Júlia</span>
+<span class="duration">6ms</span>
+</div>
+<div class="location">Regra: RF-01: senha com pelo menos 8 caracteres</div>
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>POST /api/auth/register › AUT-09 — senha com menos de 8 caracteres responde 400</span><span class="location">src/tests/integration/4-http/auth.test.ts:199</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">PET-05</span>
+<span class="title">Campo obrigatório vazio responde 400 e não grava</span>
+<span class="chip label" style="--hue:125" data-filter="integration">integration</span>
+<span class="chip requirement" style="--hue:202" data-filter="RF-02">RF-02</span><span class="chip requirement" style="--hue:117" data-filter="RF-04">RF-04</span>
+<span class="chip neutral">Eduardo</span>
+<span class="duration">400ms</span>
+</div>
+<div class="location">Regra: RF-04: nome, tipo, raça, idade e peso obrigatórios</div>
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>POST /api/pets › PET-05 — campo obrigatório inválido (nome vazio) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/pets.test.ts:77</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/pets › PET-05 — campo obrigatório inválido (nome só com espaços) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/pets.test.ts:77</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/pets › PET-05 — campo obrigatório inválido (tipo vazio) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/pets.test.ts:77</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/pets › PET-05 — campo obrigatório inválido (raça só com espaço) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/pets.test.ts:77</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/pets › PET-05 — campo obrigatório inválido (idade ausente) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/pets.test.ts:77</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/pets › PET-05 — campo obrigatório inválido (peso ausente) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/pets.test.ts:77</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/pets › PET-05 — campo obrigatório inválido (idade nula) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/pets.test.ts:77</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">APT-03</span>
+<span class="title">Compromisso sem pet, título, categoria, data ou horário responde 400</span>
+<span class="chip label" style="--hue:125" data-filter="integration">integration</span>
+<span class="chip requirement" style="--hue:339" data-filter="RF-03">RF-03</span><span class="chip requirement" style="--hue:117" data-filter="RF-04">RF-04</span>
+<span class="chip neutral">Tassiana</span>
+<span class="duration">279ms</span>
+</div>
+<div class="location">Regra: RF-04: campos obrigatórios</div>
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>POST /api/appointments › APT-03 — campo obrigatório vazio (petId) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/appointments.test.ts:75</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/appointments › APT-03 — campo obrigatório vazio (title) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/appointments.test.ts:75</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/appointments › APT-03 — campo obrigatório vazio (category) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/appointments.test.ts:75</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/appointments › APT-03 — campo obrigatório vazio (date) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/appointments.test.ts:75</span></li><li class="match passed"><span class="status">✓</span><span>POST /api/appointments › APT-03 — campo obrigatório vazio (time) responde 400 e não grava</span><span class="location">src/tests/integration/4-http/appointments.test.ts:75</span></li></ul>
+</li></ul></div>
+</section>
+<section>
+<h2>Baseados em cenário <span class="count">(2)</span></h2>
+
+<div class="card"><ul><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">CT-12</span>
+<span class="title">Dois tutores: nenhum vê o pet do outro</span>
+<span class="chip label" style="--hue:222" data-filter="chromium">chromium</span><span class="chip label" style="--hue:57" data-filter="cenario">cenario</span>
+<span class="chip requirement" style="--hue:202" data-filter="RF-02">RF-02</span><span class="chip requirement" style="--hue:84" data-filter="RF-09">RF-09</span>
+<span class="chip neutral">Jayne</span>
+<span class="duration">1.0s</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>Pets › CT-12 — isolamento entre usuários</span><span class="location">e2e/pets.spec.ts:115</span></li></ul>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">CT-18</span>
+<span class="title">Modal de pet pelo teclado: foco preso, Esc fecha e o foco volta ao botão</span>
+<span class="chip label" style="--hue:222" data-filter="chromium">chromium</span><span class="chip label" style="--hue:57" data-filter="cenario">cenario</span>
+<span class="chip requirement" style="--hue:169" data-filter="RF-07">RF-07</span>
+<span class="chip neutral">Camila</span>
+<span class="duration">430ms</span>
+</div>
+
+<ul class="matches"><li class="match passed"><span class="status">✓</span><span>Interface, erros e sessão › CT-18 — acessibilidade do modal de pet</span><span class="location">e2e/interface.spec.ts:111</span></li></ul>
+</li></ul></div>
+</section>
+<section>
+<h2>Desempenho <span class="count">(5)</span></h2>
+<p class="meta">Apache JMeter contra o build local, com 30 pets e 300 compromissos no banco. Plano escrito pelo Eduardo.</p>
+<div class="card"><ul><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">PRF-01</span>
+<span class="title">GET /api/appointments (300 itens)</span>
+<span class="chip neutral">10 usuários por 5 s</span>
+<span class="chip neutral">Eduardo</span>
+<span class="duration">3742 requisições</span>
+</div>
+<div class="location">p95 16 ms · máximo 23 ms · limite 500 ms · 0 falhas</div>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">PRF-02</span>
+<span class="title">GET /api/pets (30 itens)</span>
+<span class="chip neutral">10 usuários por 5 s</span>
+<span class="chip neutral">Eduardo</span>
+<span class="duration">8564 requisições</span>
+</div>
+<div class="location">p95 9 ms · máximo 18 ms · limite 500 ms · 0 falhas</div>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">PRF-03</span>
+<span class="title">POST /api/appointments</span>
+<span class="chip neutral">10 usuários por 3 s</span>
+<span class="chip neutral">Eduardo</span>
+<span class="duration">5695 requisições</span>
+</div>
+<div class="location">p95 8 ms · máximo 15 ms · limite 500 ms · 0 falhas</div>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">PRF-04</span>
+<span class="title">POST /api/appointments inválido (400)</span>
+<span class="chip neutral">10 usuários por 3 s</span>
+<span class="chip neutral">Eduardo</span>
+<span class="duration">6274 requisições</span>
+</div>
+<div class="location">p95 5 ms · máximo 15 ms · limite 200 ms · 0 falhas</div>
+</li><li class="test passed">
+<div class="test-line">
+<span class="status" title="Passou">✓</span><span class="verdict">Passou</span>
+<span class="case-id">PRF-05</span>
+<span class="title">POST /api/auth/login (hash scrypt)</span>
+<span class="chip neutral">5 usuários por 5 s</span>
+<span class="chip neutral">Eduardo</span>
+<span class="duration">43 requisições</span>
+</div>
+<div class="location">p95 29 ms · máximo 32 ms · limite 1500 ms · 0 falhas</div>
+</li></ul></div>
+</section>
+</main>
+<script></script>
+</body>
+</html>

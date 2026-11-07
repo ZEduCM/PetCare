@@ -1,0 +1,26 @@
+<section id="integracao-e2e" data-transition="fade" style="background:#FDF6DC;color:#1E1A17;font-family:'Quicksand', Verdana, sans-serif;padding:80px 112px;display:flex;flex-direction:column">
+<svg aria-label="Fundo quadriculado" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px"><defs><pattern id="grade" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M96 0H0V96" fill="none" stroke="#F3E8C4" stroke-width="2"/></pattern></defs><rect width="1920" height="1080" fill="url(#grade)"/></svg>
+<div style="flex:1;background:#FFFEFA;border:12px solid #C08552;border-radius:48px;padding:40px 56px;display:flex;flex-direction:column;gap:28px">
+<h2 style="font-family:'Lilita One', 'Trebuchet MS', sans-serif;font-size:60px;font-weight:400;line-height:1.1;color:#9A4A1F;text-align:center;text-transform:uppercase">Integração bottom-up e ponta a ponta</h2>
+<div style="display:flex;flex-direction:row;gap:48px;align-items:start">
+<div style="width:520px;display:flex;flex-direction:column;align-items:center;gap:10px">
+<p style="font-size:26px;font-weight:700;text-align:center;background:#FDF6DC;border:3px solid #F2B233;border-radius:18px;padding:12px 20px;width:520px">4 · Rotas HTTP</p>
+<x-shape kind="arrow-up" style="width:36px;height:40px;background:#C08552"></x-shape>
+<p style="font-size:26px;font-weight:700;text-align:center;background:#FDF6DC;border:3px solid #F2B233;border-radius:18px;padding:12px 20px;width:520px">3 · Controllers</p>
+<x-shape kind="arrow-up" style="width:36px;height:40px;background:#C08552"></x-shape>
+<p style="font-size:26px;font-weight:700;text-align:center;background:#FDF6DC;border:3px solid #F2B233;border-radius:18px;padding:12px 20px;width:520px">2 · Casos de uso</p>
+<x-shape kind="arrow-up" style="width:36px;height:40px;background:#C08552"></x-shape>
+<p style="font-size:26px;font-weight:700;text-align:center;background:#FDF6DC;border:3px solid #F2B233;border-radius:18px;padding:12px 20px;width:520px">1 · Repositórios Postgres</p>
+<p style="font-size:24px;line-height:1.4;color:#5B514A;text-align:center;width:520px">Sem stubs: os módulos de baixo são reais, já validados no nível anterior, e o próprio teste faz o papel de driver.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:28px;font-weight:700;color:#9A4A1F">Integração: níveis 2 e 4</h3>
+<img src="/_blob/d02049e159490df5f1481a7f5e76b06d" alt="Dois casos de integração, nível 2 e nível 4, ambos com o resultado Passou" style="width:1000px;height:220px;object-fit:contain;border:2px solid #E5D9B5;border-radius:16px">
+<h3 style="font-size:28px;font-weight:700;color:#9A4A1F">Ponta a ponta: CT-11 no navegador</h3>
+<img src="/_blob/a446992a638e12fa7d2195174e90e09e" alt="O cenário CT-11, cadastrar um pet, recarregar, sair e entrar de novo, com o resultado Passou" style="width:1000px;height:130px;object-fit:contain;border:2px solid #E5D9B5;border-radius:16px">
+<p style="font-size:24px;line-height:1.4;color:#5B514A">O CT-11 roda no Chromium contra o build de produção: cadastra um pet, recarrega a página, sai e entra de novo, e confere que o pet continua na lista.</p>
+</div>
+</div>
+</div>
+<aside>Integração bottom-up: o nível 2 junta o caso de uso RegisterUser com o repositório Postgres real e o hash scrypt; o nível 4 chama a rota HTTP de logout com todas as camadas reais embaixo. Ponta a ponta: para mostrar ao vivo, npx playwright test --headed --grep CT-11 abre o navegador e executa o fluxo na frente da turma.</aside>
+</section>

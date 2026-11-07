@@ -1,0 +1,5 @@
+ RUN  v5.0.3 /home/educm/Studies/InterfaceProgramming/PetCare/.vitest/worktree-red
+ Test Files  1 passed | 7 skipped (8)
+      Tests  1 passed | 92 skipped (93)
+   Start at  15:02:36
+   Duration  2.97s (import 45%, transform 24%, setup 17%, tests 11%, worker 3%)

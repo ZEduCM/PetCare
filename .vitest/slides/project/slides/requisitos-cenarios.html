@@ -1,0 +1,16 @@
+<section id="requisitos-cenarios" data-transition="fade" style="background:#FDF6DC;color:#1E1A17;font-family:'Quicksand', Verdana, sans-serif;padding:80px 112px;display:flex;flex-direction:column">
+<svg aria-label="Fundo quadriculado" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px"><defs><pattern id="grade" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M96 0H0V96" fill="none" stroke="#F3E8C4" stroke-width="2"/></pattern></defs><rect width="1920" height="1080" fill="url(#grade)"/></svg>
+<div style="flex:1;background:#FFFEFA;border:12px solid #C08552;border-radius:48px;padding:40px 56px;display:flex;flex-direction:column;gap:24px">
+<h2 style="font-family:'Lilita One', 'Trebuchet MS', sans-serif;font-size:60px;font-weight:400;line-height:1.1;color:#9A4A1F;text-align:center;text-transform:uppercase">Baseados em requisitos e em cenário</h2>
+<p style="font-size:26px;line-height:1.4;color:#5B514A;text-align:center">Os baseados em requisitos verificam uma regra da especificação pela API. Os baseados em cenário percorrem uma situação de uso no navegador.</p>
+<table style="font-size:25px;color:#1E1A17">
+<tr style="background:#FFF4D1"><th style="width:12%;text-align:left">Tipo</th><th style="width:9%;text-align:left">ID</th><th style="width:37%;text-align:left">Caso</th><th style="width:20%;text-align:left">Regra ou requisito</th><th style="width:10%;text-align:left">Autor</th><th style="width:12%;text-align:left">Execução</th></tr>
+<tr><td>Requisito</td><td>AUT-09</td><td>Senha com 7 caracteres responde 400</td><td>RF-01: senha com pelo menos 8 caracteres</td><td>Júlia</td><td style="color:#2E7D32">Passou</td></tr>
+<tr style="background:#FFFBEE"><td>Requisito</td><td>PET-05</td><td>Campo obrigatório vazio responde 400 e não grava</td><td>RF-04: nome, tipo, raça, idade e peso</td><td>Eduardo</td><td style="color:#2E7D32">Passou</td></tr>
+<tr><td>Requisito</td><td>APT-03</td><td>Compromisso sem pet, título, categoria, data ou horário responde 400</td><td>RF-04: campos obrigatórios</td><td>Tassiana</td><td style="color:#2E7D32">Passou</td></tr>
+<tr style="background:#FFFBEE"><td>Cenário</td><td>CT-12</td><td>Dois tutores: nenhum vê o pet do outro</td><td>RF-02 e RF-09</td><td>Jayne</td><td style="color:#2E7D32">Passou</td></tr>
+<tr><td>Cenário</td><td>CT-18</td><td>Modal de pet pelo teclado: foco preso, Esc fecha e o foco volta ao botão</td><td>RF-07</td><td>Camila</td><td style="color:#2E7D32">Passou</td></tr>
+</table>
+</div>
+<aside>Baseados em requisitos: cada teste cita a regra que verifica e o requisito de onde ela vem. O PET-05 e o APT-03 rodam uma variação para cada campo obrigatório. Baseados em cenário: CT-12 cria dois tutores e garante o isolamento dos dados; CT-18 opera o modal só pelo teclado, que é o requisito de acessibilidade.</aside>
+</section>

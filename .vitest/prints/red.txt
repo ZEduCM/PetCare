@@ -1,0 +1,37 @@
+ RUN  v5.0.3 /home/educm/Studies/InterfaceProgramming/PetCare/.vitest/worktree-red
+ ❯ |integration| src/tests/integration/4-http/appointments.test.ts (27 tests | 1 failed | 26 skipped) 125ms
+   ❯ Defeitos do cadastro de compromisso (4)
+     × DEF-18 — categoria fora da lista responde 400 123ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  |integration| src/tests/integration/4-http/appointments.test.ts > Defeitos do cadastro de compromisso > DEF-18 — categoria fora da lista responde 400
+AssertionError: expected { status: 201, body: { …(9) } } to deeply equal { status: 400, …(1) }
+- Expected
++ Received
+  {
+    "body": {
+-     "message": "Choose a valid category.",
++     "category": "Festa",
++     "completed": false,
++     "date": "2026-11-20",
++     "id": "70e01a62-b439-4db8-b888-6894be0a110e",
++     "notes": "Shampoo neutro",
++     "pet": "Thor",
++     "petId": "6ca869b0-a509-4512-ba71-bd5180bbffde",
++     "time": "10:30",
++     "title": "Banho do Thor",
+    },
+-   "status": 400,
++   "status": 201,
+  }
+ ❯ src/tests/integration/4-http/appointments.test.ts:369:22
+    367|     });
+    368|
+    369|     expect(response).toEqual({
+       |                      ^
+    370|       status: 400,
+    371|       body: { message: messages.invalidCategory },
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+ Test Files  1 failed | 7 skipped (8)
+      Tests  1 failed | 92 skipped (93)
+   Start at  14:59:01
+   Duration  3.07s (import 44%, transform 23%, setup 18%, tests 12%, worker 3%)

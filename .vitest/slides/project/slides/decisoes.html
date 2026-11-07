@@ -1,0 +1,16 @@
+<section id="decisoes" data-transition="fade" style="background:#FDF6DC;color:#1E1A17;font-family:'Quicksand', Verdana, sans-serif;padding:80px 112px;display:flex;flex-direction:column">
+<svg aria-label="Fundo quadriculado" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px"><defs><pattern id="grade" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M96 0H0V96" fill="none" stroke="#F3E8C4" stroke-width="2"/></pattern></defs><rect width="1920" height="1080" fill="url(#grade)"/></svg>
+<div style="flex:1;background:#FFFEFA;border:12px solid #C08552;border-radius:48px;padding:40px 56px;display:flex;flex-direction:column;gap:24px">
+<h2 style="font-family:'Lilita One', 'Trebuchet MS', sans-serif;font-size:60px;font-weight:400;line-height:1.1;color:#9A4A1F;text-align:center;text-transform:uppercase">Decisões técnicas</h2>
+<ul style="font-size:27px;line-height:1.45;color:#1E1A17;padding:0 0 0 36px">
+<li><b>Software base reaproveitado</b> da Avaliação 2: o esforço foi testar em quatro níveis e corrigir defeitos reais com TDD.</li>
+<li><b>Clean Architecture:</b> os casos de uso recebem repositórios por interface, então os unitários usam repositórios falsos e a integração sobe pelas camadas.</li>
+<li><b>Entidades validadas com Zod</b> no construtor: a regra fica num lugar só e cada correção de defeito mudou apenas a entidade.</li>
+<li><b>Postgres em memória (PGlite)</b> com o schema real: integração, ponta a ponta e JMeter sem Docker nem internet.</li>
+<li><b>ID do caso no nome e tag do requisito:</b> rastreabilidade dentro do próprio teste, com filtros e relatório por requisito.</li>
+<li><b>Mensagens da API em inglês</b> num catálogo único, com tradução na tela.</li>
+<li><b>Defeitos conhecidos como falha esperada:</b> a suíte segue verde e o teste vira o vermelho do próximo ciclo.</li>
+</ul>
+</div>
+<aside>Justificativa das decisões, para o critério Conceito. A ordem segue o impacto no TDD: a arquitetura permitiu testar por camadas, o Zod concentrou as regras onde as correções acontecem, o PGlite tirou a dependência de infraestrutura, e as convenções de nome e tag deram a rastreabilidade que o relatório usa.</aside>
+</section>

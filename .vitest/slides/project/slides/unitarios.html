@@ -1,0 +1,21 @@
+<section id="unitarios" data-transition="fade" style="background:#FDF6DC;color:#1E1A17;font-family:'Quicksand', Verdana, sans-serif;padding:80px 112px;display:flex;flex-direction:column">
+<svg aria-label="Fundo quadriculado" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px"><defs><pattern id="grade" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M96 0H0V96" fill="none" stroke="#F3E8C4" stroke-width="2"/></pattern></defs><rect width="1920" height="1080" fill="url(#grade)"/></svg>
+<div style="flex:1;background:#FFFEFA;border:12px solid #C08552;border-radius:48px;padding:40px 56px;display:flex;flex-direction:column;gap:22px">
+<h2 style="font-family:'Lilita One', 'Trebuchet MS', sans-serif;font-size:60px;font-weight:400;line-height:1.1;color:#9A4A1F;text-align:center;text-transform:uppercase">Testes unitários</h2>
+<p style="font-size:26px;line-height:1.4;color:#5B514A;text-align:center">Dez entre os 133 unitários, dois por integrante. A última coluna vem da execução de hoje.</p>
+<table style="font-size:23px;color:#1E1A17">
+<tr style="background:#FFF4D1"><th style="width:15%;text-align:left">ID</th><th style="width:49%;text-align:left">Caso</th><th style="width:10%;text-align:left">Req.</th><th style="width:12%;text-align:left">Autor</th><th style="width:14%;text-align:left">Execução</th></tr>
+<tr><td>LIB-04</td><td>A senha correta é verificada pelo hash scrypt</td><td>RF-01</td><td>Júlia</td><td style="color:#2E7D32">Passou</td></tr>
+<tr style="background:#FFFBEE"><td>Password</td><td>Exige pelo menos 8 caracteres</td><td>RF-01</td><td>Júlia</td><td style="color:#2E7D32">Passou</td></tr>
+<tr><td>Appointment</td><td>Recusa datas e horários inválidos</td><td>RF-03</td><td>Tassiana</td><td style="color:#2E7D32">Passou</td></tr>
+<tr style="background:#FFFBEE"><td>CreateAppointment</td><td>Falha quando o pet é de outro usuário</td><td>RF-03</td><td>Tassiana</td><td style="color:#2E7D32">Passou</td></tr>
+<tr><td>Pet</td><td>Recusa as idades -1, 101, abc e 2.5</td><td>RF-02</td><td>Jayne</td><td style="color:#2E7D32">Passou</td></tr>
+<tr style="background:#FFFBEE"><td>CreatePet</td><td>Não grava nada quando os dados são inválidos</td><td>RF-02</td><td>Jayne</td><td style="color:#2E7D32">Passou</td></tr>
+<tr><td>translate</td><td>Traduz todas as mensagens da API para português</td><td>RF-06</td><td>Camila</td><td style="color:#2E7D32">Passou</td></tr>
+<tr style="background:#FFFBEE"><td>errorResponse</td><td>Esconde erros inesperados atrás de um 500</td><td>RF-06</td><td>Camila</td><td style="color:#2E7D32">Passou</td></tr>
+<tr><td>PRX-01</td><td>Página protegida sem cookie redireciona para /login</td><td>RF-09</td><td>Eduardo</td><td style="color:#2E7D32">Passou</td></tr>
+<tr style="background:#FFFBEE"><td>ZodValidator</td><td>Lança ValidationError com a mensagem do primeiro problema</td><td>RF-04</td><td>Eduardo</td><td style="color:#2E7D32">Passou</td></tr>
+</table>
+</div>
+<aside>Cada pessoa apresenta os seus dois casos em uma frase: o que o teste garante e por que importa. Os unitários usam repositórios falsos em memória porque os casos de uso recebem o repositório por interface. Se perguntarem como rodar: npm run test:unit.</aside>
+</section>

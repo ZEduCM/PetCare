@@ -1,0 +1,10 @@
+<section id="desempenho" data-transition="fade" style="background:#FDF6DC;color:#1E1A17;font-family:'Quicksand', Verdana, sans-serif;padding:80px 112px;display:flex;flex-direction:column">
+<svg aria-label="Fundo quadriculado" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px"><defs><pattern id="grade" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M96 0H0V96" fill="none" stroke="#F3E8C4" stroke-width="2"/></pattern></defs><rect width="1920" height="1080" fill="url(#grade)"/></svg>
+<div style="flex:1;background:#FFFEFA;border:12px solid #C08552;border-radius:48px;padding:40px 56px;display:flex;flex-direction:column;align-items:center;gap:24px">
+<h2 style="font-family:'Lilita One', 'Trebuchet MS', sans-serif;font-size:60px;font-weight:400;line-height:1.1;color:#9A4A1F;text-align:center;text-transform:uppercase">Desempenho com Apache JMeter</h2>
+<p style="font-size:27px;line-height:1.4;color:#1E1A17;text-align:center">Build de produção local com 30 pets e 300 compromissos no banco. Cada requisição tem um limite de tempo, e a asserção do JMeter falha se ele for ultrapassado.</p>
+<img src="/_blob/7d68a9297e0b099d0cce3e0e6676816f" alt="Cinco medições, PRF-01 a PRF-05, com p95, máximo, limite e falhas, todas com o resultado Passou" style="width:1560px;height:520px;object-fit:contain;border:2px solid #E5D9B5;border-radius:20px">
+<p style="font-size:25px;line-height:1.4;color:#5B514A;text-align:center">p95, máximo e limite por requisição, lidos do arquivo de resultados da última execução do JMeter.</p>
+</div>
+<aside>O plano do JMeter prepara um usuário com 30 pets e 300 compromissos, depois dispara as cinco cargas. PRF-04 é a requisição inválida, com limite menor porque a validação deve responder antes de tocar no banco. PRF-05 é o login, mais lento por causa do hash scrypt, por isso o limite maior. Para rodar: npm run test:performance, que baixa o JMeter na primeira vez e precisa de Java.</aside>
+</section>

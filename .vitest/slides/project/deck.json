@@ -1,0 +1,33 @@
+{
+  "v": 4,
+  "createdOnFiles": { "v": 1, "at": "2026-10-23T18:05:00Z" },
+  "lists": "css",
+  "title": "PetCare — Testes e TDD",
+  "order": [
+    "cover",
+    "ciclo",
+    "estrategia",
+    "requisitos-tarefa",
+    "rastreabilidade",
+    "unitarios",
+    "integracao-e2e",
+    "requisitos-cenarios",
+    "desempenho",
+    "ciclos-tdd",
+    "ao-vivo",
+    "equipe",
+    "decisoes"
+  ],
+  "sections": {
+    "conceito": { "description": "O que é TDD e a estratégia de testes adotada no PetCare.", "start": "cover" },
+    "evidencias": { "description": "Os testes exigidos pela tarefa, com o resultado real de cada um.", "start": "requisitos-tarefa" },
+    "tdd": { "description": "Os ciclos de TDD no repositório e um ciclo demonstrado ao vivo.", "start": "ciclos-tdd" },
+    "equipe": { "description": "Contribuição de cada integrante e as decisões técnicas.", "start": "equipe" }
+  },
+  "faces": {
+    "lilita-one": { "family": "Lilita One", "href": "https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" },
+    "quicksand": { "family": "Quicksand", "href": "https://fonts.googleapis.com/css2?family=Quicksand:wght@400..700&display=swap" },
+    "jetbrains-mono": { "family": "JetBrains Mono", "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" }
+  },
+  "designSystems": []
+}

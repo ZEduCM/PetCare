@@ -1,0 +1,35 @@
+<section id="ao-vivo" data-transition="fade" style="background:#FDF6DC;color:#1E1A17;font-family:'Quicksand', Verdana, sans-serif;padding:80px 112px;display:flex;flex-direction:column">
+<svg aria-label="Fundo quadriculado" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px"><defs><pattern id="grade" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M96 0H0V96" fill="none" stroke="#F3E8C4" stroke-width="2"/></pattern></defs><rect width="1920" height="1080" fill="url(#grade)"/></svg>
+<div style="flex:1;background:#FFFEFA;border:12px solid #C08552;border-radius:48px;padding:40px 56px;display:flex;flex-direction:column;gap:22px">
+<h2 style="font-family:'Lilita One', 'Trebuchet MS', sans-serif;font-size:60px;font-weight:400;line-height:1.1;color:#9A4A1F;text-align:center;text-transform:uppercase">Um ciclo ao vivo: DEF-18</h2>
+<p style="font-size:26px;line-height:1.4;color:#5B514A;text-align:center">Categoria do compromisso fora da lista do formulário. O teste pede 400; antes da correção a API gravava o compromisso e respondia 201.</p>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:start">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:26px;font-weight:700;color:#C62828">Vermelho · commit 4131d83, só o teste</p>
+<div style="background:#1E1A17;border-radius:20px;padding:24px 28px;display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:24px;color:#E6E8EB">$ git checkout 4131d83</p>
+<p style="font-size:24px;color:#E6E8EB">$ npx vitest run --project integration -t DEF-18</p>
+<p style="font-size:24px;color:#F85149">× DEF-18 — categoria fora da lista responde 400</p>
+<p style="font-size:24px;color:#8B949E">  AssertionError: expected 201 to equal 400</p>
+<p style="font-size:24px;color:#3FB950">  - status: 400</p>
+<p style="font-size:24px;color:#F85149">  + status: 201</p>
+<p style="font-size:24px;color:#F85149">Tests  1 failed | 92 skipped</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:26px;font-weight:700;color:#2E7D32">Verde · commit b71bc3e, só a correção</p>
+<div style="background:#1E1A17;border-radius:20px;padding:24px 28px;display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono', 'Courier New', monospace">
+<p style="font-size:24px;color:#E6E8EB">$ git checkout b71bc3e</p>
+<p style="font-size:24px;color:#E6E8EB">$ npx vitest run --project integration -t DEF-18</p>
+<p style="font-size:24px;color:#3FB950">✓ DEF-18 — categoria fora da lista responde 400</p>
+<p style="font-size:24px;color:#3FB950">Tests  1 passed | 92 skipped</p>
+<p style="font-size:24px;color:#E6E8EB">$ git checkout main</p>
+<p style="font-size:24px;color:#8B949E">  volta para a versão atual</p>
+<p style="font-size:24px;color:#8B949E"> </p>
+</div>
+</div>
+</div>
+<p style="font-size:25px;line-height:1.4;color:#1E1A17;background:#FFF4D1;border-radius:24px;padding:20px 28px">A correção mudou um único arquivo, a entidade Appointment, em seis linhas: a categoria passou a ser validada contra a lista do formulário. É a implementação mínima que faz o teste passar.</p>
+</div>
+<aside>Demonstração ao vivo, com o terminal aberto na pasta do projeto. Primeiro comando: git checkout 4131d83 e npx vitest run --project integration -t DEF-18, o teste falha mostrando 201 no lugar de 400. Segundo: git checkout b71bc3e e o mesmo vitest, o teste passa. Terminar com git checkout main. Se o tempo apertar, este slide já mostra a saída real dos dois comandos.</aside>
+</section>

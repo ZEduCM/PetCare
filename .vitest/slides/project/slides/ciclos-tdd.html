@@ -1,0 +1,15 @@
+<section id="ciclos-tdd" data-transition="fade" style="background:#FDF6DC;color:#1E1A17;font-family:'Quicksand', Verdana, sans-serif;padding:80px 112px;display:flex;flex-direction:column">
+<svg aria-label="Fundo quadriculado" viewBox="0 0 1920 1080" style="position:absolute;left:0;top:0;width:1920px;height:1080px"><defs><pattern id="grade" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M96 0H0V96" fill="none" stroke="#F3E8C4" stroke-width="2"/></pattern></defs><rect width="1920" height="1080" fill="url(#grade)"/></svg>
+<div style="flex:1;background:#FFFEFA;border:12px solid #C08552;border-radius:48px;padding:40px 56px;display:flex;flex-direction:column;gap:24px">
+<h2 style="font-family:'Lilita One', 'Trebuchet MS', sans-serif;font-size:60px;font-weight:400;line-height:1.1;color:#9A4A1F;text-align:center;text-transform:uppercase">Ciclos de TDD no repositório</h2>
+<p style="font-size:26px;line-height:1.4;color:#5B514A;text-align:center">Três ciclos, um por autora, cada um com um commit só de teste seguido de um commit só de correção. O histórico tem onze ciclos no total.</p>
+<table style="font-size:25px;color:#1E1A17">
+<tr style="background:#FFF4D1"><th style="width:8%;text-align:left">Ciclo</th><th style="width:32%;text-align:left">Defeito</th><th style="width:25%;text-align:left">Vermelho (teste)</th><th style="width:25%;text-align:left">Verde (correção)</th><th style="width:10%;text-align:left">Autora</th></tr>
+<tr><td>1</td><td>DEF-03: peso do pet entre 0,1 e 1000</td><td>dc908bc · test: cover invalid pet weights</td><td>21b72d5 · fix: validate pet weight range</td><td>Jayne</td></tr>
+<tr style="background:#FFFBEE"><td>2</td><td>DEF-18: categoria do compromisso só da lista</td><td>4131d83 · test: expect appointment category from the list</td><td>b71bc3e · fix: restrict appointment category to the form options, refatorado em 7feef9e</td><td>Tassiana</td></tr>
+<tr><td>3</td><td>DEF-14: rota inexistente mostra página 404</td><td>d4298fb · test: reproduce DEF-14 unknown route</td><td>68718c8 · fix: show 404 for unknown routes</td><td>Camila</td></tr>
+</table>
+<p style="font-size:25px;line-height:1.4;color:#1E1A17;background:#FFF4D1;border-radius:24px;padding:20px 28px">Os commits são feitos na conta de cada integrante. As mensagens <b>test:</b>, <b>fix:</b> e <b>refactor:</b> marcam as três fases do ciclo, então o histórico do Git é a evidência do processo.</p>
+</div>
+<aside>Critério Habilidade: aplicação correta do ciclo. Mostrar o git log filtrado se houver tempo: git log --oneline, e apontar os pares test e fix. Cada ciclo nasceu de um defeito real encontrado nos testes, registrado antes como falha esperada. O próximo slide demonstra o ciclo 2 ao vivo.</aside>
+</section>
